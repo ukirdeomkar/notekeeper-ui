@@ -7,9 +7,23 @@ const NoteState=(props) =>{
     const host = process.env.REACT_APP_BACKEND_HOST_URL;
     const currNotes = [];
     const [notes, setNotes] = useState(currNotes);
+    const fetchNotes = async () => {
+        const response = await fetch(`${host}/notekeeper/note`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            // "auth-token":
+            //  localStorage.getItem('token'),
+          },
+        });
+        const json = await response.json();
+        console.log(json)
+        setNotes(json);
+      };
+
 
   return (
-    <NoteContext.Provider value={{ notes}}>
+    <NoteContext.Provider value={{ notes ,fetchNotes}}>
       {props.children}
     </NoteContext.Provider>
   )
