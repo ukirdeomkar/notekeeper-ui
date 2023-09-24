@@ -36,7 +36,7 @@ function Navbar() {
                 </Link>
               </li>
             </ul>
-            <ul class="navbar-nav float-end">
+            <ul className="navbar-nav float-end">
               {!token ? (
                 <>
                   <li className="nav-item">

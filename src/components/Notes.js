@@ -6,12 +6,14 @@ import NoteItem from "./NoteItem";
 function Notes() {
 
     const context = useContext(NoteContext);
-    const { notes , fetchNotes ,editNote } = context;
+    const { notes , fetchNotes ,editNote , sharingNote } = context;
     let navigate = useNavigate();
     const [note, setNote] = useState({
         etitle: "",
         edescription: "",
       });
+
+    const [permission, setpermission] = useState('0');
       useEffect(()=>{
         if(localStorage.getItem('token')){
           fetchNotes();
@@ -24,6 +26,10 @@ function Notes() {
       [])
       const onChange = (e) => {
         setNote({ ...note, [e.target.name]: e.target.value });
+      };
+      const handlePermissionChange = (e) => {
+        setpermission(e.target.value);
+        console.log("Current Permiision: " +permission);
       };
       const handleClick = (e) => {
         refClose.current.click();
@@ -45,11 +51,15 @@ function Notes() {
           eid : currNote.id,
           etitle: currNote.title,
           edescription: currNote.description,
-        });      
+          epermission : currNote.permission,
+          
+        });    
+        setpermission(currNote.permission)  
 
       };
-      const handleShareClick =()=>{
+      const handleShareClick =(e)=>{
         refShare.current.click();
+        sharingNote(note.eid,permission)
         console.log("Handling share")
       }
 
@@ -174,10 +184,9 @@ function Notes() {
             </div>
             <div className='modal-body'>
               <form>
-              <div class="input-group mb-3">
-                <label class="input-group-text" for="inputGroupSelect01">Sharing Options</label>
-                <select class="form-select" id="inputGroupSelect01">
-                  <option selected >Choose...</option>
+              <div className="input-group mb-3">
+                <label className="input-group-text" htmlFor="permission">Sharing Options</label>
+                <select className="form-select" id="permission" name="permission" value={permission} onChange={handlePermissionChange}>
                   <option value="0">Private</option>
                   <option value="1">Shared with View Only Access</option>
                   <option value="2">Shared with View and Edit Access</option>

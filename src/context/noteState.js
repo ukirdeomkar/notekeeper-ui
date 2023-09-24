@@ -77,8 +77,35 @@ const NoteState=(props) =>{
       setNotes(newNotes);
     };
 
+    const sharingNote = async (id , permission) => {
+      console.log('Id :' + id );
+      console.log('permission'+ permission);
+
+      const response = await fetch(`${host}/notekeeper/sharenote/share/${id}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization" : "Bearer "+ localStorage.getItem('token'),
+        },
+        body: JSON.stringify({"sharedPermission": permission}),
+      });
+      const json = await response.json();
+      console.log(json)
+      let newNotes = JSON.parse(JSON.stringify(notes));
+      // logic to edit in client
+      for (let index = 0; index < notes.length; index++) {
+      const element = newNotes[index];
+      if (element.id === id) {
+        newNotes[index].permission = permission;
+        break;
+      }
+     
+    }
+    setNotes(newNotes);
+  };
+
   return (
-    <NoteContext.Provider value={{ notes ,fetchNotes ,addNote , deleteNote ,editNote}}>
+    <NoteContext.Provider value={{ notes ,fetchNotes ,addNote , deleteNote ,editNote , sharingNote}}>
       {props.children}
     </NoteContext.Provider>
   )

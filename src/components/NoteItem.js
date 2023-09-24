@@ -12,7 +12,7 @@ const NoteItem = (props) => {
           <div className="card-body">
             <h5 className="card-title">{note.title}</h5>
             <div className="d-flex flex-row-reverse">
-              <span class="material-symbols-outlined  align-items-center  icon"
+              <span className="material-symbols-outlined  align-items-center  icon"
               onClick={()=>shareNote(note)}
               >
                 share
