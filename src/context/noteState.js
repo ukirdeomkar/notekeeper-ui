@@ -8,12 +8,13 @@ const NoteState=(props) =>{
     const currNotes = [];
     const [notes, setNotes] = useState(currNotes);
     const fetchNotes = async () => {
-        const response = await fetch(`${host}/notekeeper/note`, {
+        const response = await fetch(`${host}/notekeeper/note/user/notes`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            // "auth-token":
-            //  localStorage.getItem('token'),
+            //"token":
+            //localStorage.getItem('token'),
+            "Authorization" : "Bearer "+ localStorage.getItem('token'),
           },
         });
         const json = await response.json();
