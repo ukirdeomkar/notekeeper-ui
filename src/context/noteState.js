@@ -52,9 +52,33 @@ const NoteState=(props) =>{
       console.log(newNotes);
       setNotes(newNotes);
     };
+    const editNote = async (id , title, description) => {
+        const response = await fetch(`${host}/notekeeper/note/${id}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization" : "Bearer "+ localStorage.getItem('token'),
+          },
+          body: JSON.stringify({ title, description}),
+        });
+        const json = await response.json();
+        console.log(json)
+        let newNotes = JSON.parse(JSON.stringify(notes));
+        // logic to edit in client
+        for (let index = 0; index < notes.length; index++) {
+        const element = newNotes[index];
+        if (element.id === id) {
+          newNotes[index].title = title;
+          newNotes[index].description = description;
+          break;
+        }
+       
+      }
+      setNotes(newNotes);
+    };
 
   return (
-    <NoteContext.Provider value={{ notes ,fetchNotes ,addNote , deleteNote}}>
+    <NoteContext.Provider value={{ notes ,fetchNotes ,addNote , deleteNote ,editNote}}>
       {props.children}
     </NoteContext.Provider>
   )

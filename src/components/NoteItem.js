@@ -4,7 +4,7 @@ import NoteContext from '../context/notecontext';
 const NoteItem =(props)=> {
     const context = useContext(NoteContext);
     const { deleteNote } = context;
-    const { note } = props;
+    const { note , updateNote} = props;
   return (
     <>
       <div className='col-md-4 my-2'>
@@ -23,7 +23,7 @@ const NoteItem =(props)=> {
               </span>
               <span
                 className='material-symbols-outlined mx-1 align-items-center icon'
-                // onClick={() => updateNote(note)}
+                onClick={() => updateNote(note)}
                 >
                 edit
               </span>

@@ -6,10 +6,9 @@ import NoteItem from "./NoteItem";
 function Notes() {
 
     const context = useContext(NoteContext);
-    const { notes , fetchNotes } = context;
+    const { notes , fetchNotes ,editNote } = context;
     let navigate = useNavigate();
     const [note, setNote] = useState({
-        id: "",
         etitle: "",
         edescription: "",
       });
@@ -28,8 +27,18 @@ function Notes() {
       };
       const handleClick = (e) => {
         refClose.current.click();
-        //editNote(note.id, note.etitle, note.edescription, note.etag);
+        editNote(note.eid, note.etitle, note.edescription);
         //showAlert("Note Updated Successfully" , "success");
+      };
+      const updateNote = (currNote) => {
+        ref.current.click();
+        
+        setNote({
+          eid : currNote.id,
+          etitle: currNote.title,
+          edescription: currNote.description,
+        });
+        
       };
 
       const ref = useRef(null);
@@ -125,7 +134,7 @@ function Notes() {
         {notes.map((note) => {
           return (
             <NoteItem key={note.id} note={note} 
-            // updateNote={updateNote}
+            updateNote={updateNote}
              />
           );
         })}
