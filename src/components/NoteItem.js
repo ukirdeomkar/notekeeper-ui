@@ -3,6 +3,7 @@ import NoteContext from '../context/notecontext';
 
 const NoteItem =(props)=> {
     const context = useContext(NoteContext);
+    const { deleteNote } = context;
     const { note } = props;
   return (
     <>
@@ -12,11 +13,11 @@ const NoteItem =(props)=> {
             <h5 className='card-title'>{note.title}</h5>
             <div className='d-flex flex-row-reverse'>
               <span
-                className='material-symbols-outlined mx-1 align-items-center icon'
-                // onClick={() => {
-                //   deleteNote(note._id);
+                className=' material-symbols-outlined mx-1 align-items-center icon '
+               onClick={() => {
+               deleteNote(note.id);
                 //   showAlert("Note Deleted Successfully" , "danger");
-                // }}
+                }}
                 >
                 delete
               </span>

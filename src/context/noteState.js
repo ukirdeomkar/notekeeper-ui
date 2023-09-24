@@ -34,11 +34,27 @@ const NoteState=(props) =>{
       });
       setNotes(notes.concat(currNotes))
       
-    }
+    };
 
+    const deleteNote = async(id) => {
+
+      const response = await fetch(`${host}/notekeeper/note/${id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization" : "Bearer "+ localStorage.getItem('token'),
+        }
+      });
+      console.log( await response.json());
+      const newNotes = notes.filter((notes) => {
+        return notes.id !== id;
+      });
+      console.log(newNotes);
+      setNotes(newNotes);
+    };
 
   return (
-    <NoteContext.Provider value={{ notes ,fetchNotes ,addNote}}>
+    <NoteContext.Provider value={{ notes ,fetchNotes ,addNote , deleteNote}}>
       {props.children}
     </NoteContext.Provider>
   )
