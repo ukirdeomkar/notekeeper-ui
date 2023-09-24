@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import NoteContext from "../context/notecontext";
 import NoteItem from "./NoteItem";
 
@@ -6,14 +7,22 @@ function Notes() {
 
     const context = useContext(NoteContext);
     const { notes , fetchNotes } = context;
+    let navigate = useNavigate();
     const [note, setNote] = useState({
         id: "",
         etitle: "",
         edescription: "",
       });
       useEffect(()=>{
-        fetchNotes();
-      },[])
+        if(localStorage.getItem('token')){
+          fetchNotes();
+        }
+        else{
+          navigate("/login");
+        }
+      },
+      // eslint-disable-next-line
+      [])
       const onChange = (e) => {
         setNote({ ...note, [e.target.name]: e.target.value });
       };
