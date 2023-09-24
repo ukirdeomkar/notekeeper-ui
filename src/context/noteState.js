@@ -7,13 +7,12 @@ const NoteState=(props) =>{
     const host = process.env.REACT_APP_BACKEND_HOST_URL;
     const currNotes = [];
     const [notes, setNotes] = useState(currNotes);
+
     const fetchNotes = async () => {
         const response = await fetch(`${host}/notekeeper/note/user/notes`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            //"token":
-            //localStorage.getItem('token'),
             "Authorization" : "Bearer "+ localStorage.getItem('token'),
           },
         });
@@ -22,9 +21,24 @@ const NoteState=(props) =>{
         setNotes(json);
       };
 
+    const addNote = async(currNotes)=>{
+      const { title, description} = currNotes;
+      // eslint-disable-next-line
+      const response = await fetch(`${host}/notekeeper/note/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization" : "Bearer "+ localStorage.getItem('token'),
+        },
+        body: JSON.stringify({ title, description }),
+      });
+      setNotes(notes.concat(currNotes))
+      
+    }
+
 
   return (
-    <NoteContext.Provider value={{ notes ,fetchNotes}}>
+    <NoteContext.Provider value={{ notes ,fetchNotes ,addNote}}>
       {props.children}
     </NoteContext.Provider>
   )
