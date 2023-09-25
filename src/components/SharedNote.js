@@ -219,16 +219,7 @@ const deleteSharedNote = async(shareId) => {
             </div>
             <div className='modal-body'>
             
-            {/* <div class="mb-3">
-            <label for="disabledTextInput" class="form-label">Share the Link below :</label>
-            <fieldset disabled>
-            <input type="text" id="disabledTextInput" class="form-control  shareLink" placeholder="Disabled input" value={shareLink} aria-describedby="basic-addon2"/>
-            </fieldset>
-            <span class="input-group-text" id="basic-addon2">@example.com</span>
-            </div>
-            <button  onClick={copyToClipboard}>
-                Copy
-            </button> */}
+
             <div class="input-group mb-3">
             
             <input type="text" class="form-control shareLink" value={shareLink} aria-describedby="basic-addon2"/>
