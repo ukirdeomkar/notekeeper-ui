@@ -12,6 +12,7 @@ const SharedNote = (props) => {
 const context = useContext(NoteContext);
 const {sharedNote ,fetchSharedNotes,editSharedNote }= context;
 const host = process.env.REACT_APP_BACKEND_HOST_URL;
+var shareLink = window.location.href;
 const navigate = useNavigate();
 const [note, setNote] = useState({
     eid : '',
@@ -35,6 +36,17 @@ const updateNote = (currNote) => {
       }); 
    
   };
+  const shareNote = (currNote) => {
+    refShare.current.click();
+    setNote({
+      eid : currNote.id,
+      etitle: currNote.title,
+      edescription: currNote.description,
+      epermission : currNote.permission,
+      
+    });    
+
+  };
 
 const ref = useRef(null);
 const refClose = useRef(null);
@@ -51,6 +63,15 @@ const deleteSharedNote = async(shareId) => {
     });
     alert("Note Deleted Succesfully")
     navigate("/");
+  };
+  const copyToClipboard = () => {
+    const inputFields = document.getElementsByClassName('shareLink');
+    if (inputFields.length > 0) {
+      const inputField = inputFields[0];
+      inputField.select(); // Select the text in the input field
+      document.execCommand('copy'); // Copy the selected text to the clipboard
+      alert('Value copied to clipboard: ' + inputField.value);
+    }
   };
 
 
@@ -197,31 +218,26 @@ const deleteSharedNote = async(shareId) => {
                 aria-label='Close'></button>
             </div>
             <div className='modal-body'>
-              <form>
-              <div className="input-group mb-3">
-                <label className="input-group-text" htmlFor="permission">Sharing Options</label>
-                <select className="form-select" id="permission" name="permission"
-                //  value={permission} onChange={handlePermissionChange}
-                 >
-                  <option value="0">Private</option>
-                  <option value="1">Shared with View Only Access</option>
-                  <option value="2">Shared with View and Edit Access</option>
-                  <option value="3">Shared with View,Edit and Delete Access</option>
-                </select>
-              </div>
-              <button
-                // disabled={note.etitle < 5 || note.edescription < 5}
-                type='button'
-                className='btn btn-primary'
-                // onClick={handleShareClick}
-                >
-                Save Changes
-              </button>
-              </form>
-              <div className='mb-3 my-5'>
-                  <p><strong >Title :</strong> {note.etitle}</p>
-                  <p><strong>Description :</strong> {note.edescription} </p>
-              </div>
+            
+            {/* <div class="mb-3">
+            <label for="disabledTextInput" class="form-label">Share the Link below :</label>
+            <fieldset disabled>
+            <input type="text" id="disabledTextInput" class="form-control  shareLink" placeholder="Disabled input" value={shareLink} aria-describedby="basic-addon2"/>
+            </fieldset>
+            <span class="input-group-text" id="basic-addon2">@example.com</span>
+            </div>
+            <button  onClick={copyToClipboard}>
+                Copy
+            </button> */}
+            <div class="input-group mb-3">
+            
+            <input type="text" class="form-control shareLink" value={shareLink} aria-describedby="basic-addon2"/>
+           
+            <span onClick={copyToClipboard} class="input-group-text material-symbols-outlined" id="basic-addon2">
+                content_copy
+            </span>
+            </div>
+            
 
             </div>
             <div className='modal-footer'>
@@ -242,50 +258,7 @@ const deleteSharedNote = async(shareId) => {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    {/* Render The Note */}
 
     {sharedNote.permission > 0 ? 
     <>
@@ -297,7 +270,7 @@ const deleteSharedNote = async(shareId) => {
             <div className="d-flex flex-row-reverse">
               <span
                 className="material-symbols-outlined  align-items-center  icon"
-                // onClick={()=>shareNote(note)}
+                 onClick={()=>shareNote(sharedNote)}
               >
                 share
               </span>
