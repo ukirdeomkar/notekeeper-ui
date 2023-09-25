@@ -117,11 +117,26 @@ const NoteState=(props) =>{
     console.log(json);
     setSharedNote(json);
   };
+  const editSharedNote = async (shareId , title, description) => {
+    const response = await fetch(`${host}/notekeeper/sharenote/${shareId}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ title, description}),
+    });
+    const json = await response.json();
+    console.log(json)
+    let newNote = JSON.parse(JSON.stringify(sharedNote));
+      newNote.title = title;
+      newNote.description = description;
+  setSharedNote(newNote);
+};
 
 
 
   return (
-    <NoteContext.Provider value={{ notes ,sharedNote,fetchNotes ,addNote , deleteNote ,editNote , sharingNote ,fetchSharedNotes  }}>
+    <NoteContext.Provider value={{ notes ,sharedNote,fetchNotes ,addNote , deleteNote ,editNote , sharingNote ,fetchSharedNotes ,editSharedNote }}>
       {props.children}
     </NoteContext.Provider>
   )

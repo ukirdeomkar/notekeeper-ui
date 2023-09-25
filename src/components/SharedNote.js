@@ -1,14 +1,46 @@
-import React, {useEffect , useContext } from "react";
+import React, {useState,useEffect , useContext ,useRef} from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import NoteContext from "../context/notecontext";
 
 const SharedNote = (props) => {
   const shareId = useParams().shareId;
-
+  useEffect(() => {
+    fetchSharedNotes(shareId);
+  },
+  // eslint-disable-next-line
+   []);
 const context = useContext(NoteContext);
-const {sharedNote ,fetchSharedNotes }= context;
+const {sharedNote ,fetchSharedNotes,editSharedNote }= context;
 const host = process.env.REACT_APP_BACKEND_HOST_URL;
 const navigate = useNavigate();
+const [note, setNote] = useState({
+    eid : '',
+    etitle: '',
+    edescription: '',
+  });
+const onChange = (e) => {
+    setNote({ ...note, [e.target.name]: e.target.value });
+  };
+const handleClick = (e) => {
+    refClose.current.click();
+    editSharedNote(shareId,note.etitle, note.edescription);
+    //showAlert("Note Updated Successfully" , "success");
+  };
+const updateNote = (currNote) => {
+    ref.current.click();
+    setNote({
+        eid : currNote.id,
+        etitle: currNote.title,
+        edescription: currNote.description,
+      }); 
+   
+  };
+
+const ref = useRef(null);
+const refClose = useRef(null);
+const refShare = useRef(null);
+const refShareClose = useRef(null);
+
 const deleteSharedNote = async(shareId) => {
     //eslint-disable-next-line
     const response = await fetch(`${host}/notekeeper/sharenote/${shareId}`, {
@@ -20,20 +52,18 @@ const deleteSharedNote = async(shareId) => {
     alert("Note Deleted Succesfully")
     navigate("/");
   };
+
+
   //const { note, updateNote ,shareNote } = props;
 
 
-  useEffect(() => {
-    fetchSharedNotes(shareId);
-  },
-  // eslint-disable-next-line
-   []);
+
 
   let editBtn , deleteBtn;
   if(sharedNote.permission>=2){
     editBtn =
      <span className="material-symbols-outlined mx-1 align-items-center icon"
-    //   onClick={() => updateNote(note)}
+       onClick={() => updateNote(sharedNote)}
     >
     edit
     </span>;
@@ -53,6 +83,210 @@ const deleteSharedNote = async(shareId) => {
 
   return (
     <>
+
+    {/* Edit Note Modal */}
+    <button
+        type='button'
+        className='btn btn-primary d-none '
+        data-bs-toggle='modal'
+        ref={ref}
+        data-bs-target='#exampleModal'>
+        Launch demo modal
+      </button>
+
+      <div
+        className='modal fade'
+        id='exampleModal'
+        tabIndex='-1'
+        aria-labelledby='exampleModalLabel'
+        aria-hidden='true'>
+        <div className='modal-dialog'>
+          <div className='modal-content'>
+            <div className='modal-header'>
+              <h1 className='modal-title fs-5' id='exampleModalLabel'>
+                Edit Note
+              </h1>
+              <button
+                type='button'
+                className='btn-close'
+                data-bs-dismiss='modal'
+                aria-label='Close'></button>
+            </div>
+            <div className='modal-body'>
+              <form>
+                <div className='mb-3'>
+                  <label htmlFor='etitle' className='form-label'>
+                    Title
+                  </label>
+                  <input
+                    type='text'
+                    className='form-control'
+                    id='etitle'
+                    name='etitle'
+                    onChange={onChange}
+                    value={note.etitle}
+                    minLength={5}
+                    required
+                  />
+                </div>
+                <div className='mb-3'>
+                  <label htmlFor='edescription' className='form-label'>
+                    Description
+                  </label>
+                  <textarea
+                    type='text'
+                    className='form-control'
+                    id='edescription'
+                    name='edescription'
+                    onChange={onChange}
+                    value={note.edescription}
+                    minLength={5}
+                    required
+                  />
+                </div>
+
+              </form>
+            </div>
+            <div className='modal-footer'>
+              <button
+                type='button'
+                className='btn btn-secondary'
+                ref={refClose}
+                data-bs-dismiss='modal'>
+                Close
+              </button>
+              <button
+                disabled={note.etitle < 5 || note.edescription < 5}
+                type='button'
+                className='btn btn-primary'
+                 onClick={handleClick}
+                >
+                Save Changes
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Share Note Modal */}
+      <button
+        type='button'
+        className='btn btn-primary d-none '
+        data-bs-toggle='modal'
+        ref={refShare}
+        data-bs-target='#shareModal'>
+        shareModal
+      </button>
+
+      <div
+        className='modal fade'
+        id='shareModal'
+        tabIndex='-1'
+        aria-labelledby='shareModalLabel'
+        aria-hidden='true'>
+        <div className='modal-dialog'>
+          <div className='modal-content'>
+            <div className='modal-header'>
+              <h1 className='modal-title fs-5' id='shareModalLabel'>
+                Share this Note ??
+              </h1>
+              <button
+                type='button'
+                className='btn-close'
+                data-bs-dismiss='modal'
+                aria-label='Close'></button>
+            </div>
+            <div className='modal-body'>
+              <form>
+              <div className="input-group mb-3">
+                <label className="input-group-text" htmlFor="permission">Sharing Options</label>
+                <select className="form-select" id="permission" name="permission"
+                //  value={permission} onChange={handlePermissionChange}
+                 >
+                  <option value="0">Private</option>
+                  <option value="1">Shared with View Only Access</option>
+                  <option value="2">Shared with View and Edit Access</option>
+                  <option value="3">Shared with View,Edit and Delete Access</option>
+                </select>
+              </div>
+              <button
+                // disabled={note.etitle < 5 || note.edescription < 5}
+                type='button'
+                className='btn btn-primary'
+                // onClick={handleShareClick}
+                >
+                Save Changes
+              </button>
+              </form>
+              <div className='mb-3 my-5'>
+                  <p><strong >Title :</strong> {note.etitle}</p>
+                  <p><strong>Description :</strong> {note.edescription} </p>
+              </div>
+
+            </div>
+            <div className='modal-footer'>
+              <button
+                type='button'
+                className='btn btn-secondary'
+                ref={refShareClose}
+                data-bs-dismiss='modal'>
+                Close
+              </button>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     {sharedNote.permission > 0 ? 
     <>
       <h5 className="text-center my-5">This Note has been Shared with you. </h5>
@@ -69,11 +303,6 @@ const deleteSharedNote = async(shareId) => {
               </span>
               {deleteBtn}
               {editBtn}
-
-
-
-
-
             </div>
             <p className="card-text">{sharedNote.description}</p>
           </div>
