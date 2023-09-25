@@ -70,7 +70,7 @@ const deleteSharedNote = async(shareId) => {
       const inputField = inputFields[0];
       inputField.select(); // Select the text in the input field
       document.execCommand('copy'); // Copy the selected text to the clipboard
-      alert('Value copied to clipboard: ' + inputField.value);
+      alert('Copied to Clipboard');
     }
   };
 
@@ -220,11 +220,11 @@ const deleteSharedNote = async(shareId) => {
             <div className='modal-body'>
             
 
-            <div class="input-group mb-3">
+            <div className="input-group mb-3">
             
-            <input type="text" class="form-control shareLink" value={shareLink} aria-describedby="basic-addon2"/>
+            <input type="text" className="form-control shareLink" defaultValue={shareLink} aria-describedby="basic-addon2"/>
            
-            <span onClick={copyToClipboard} class="input-group-text material-symbols-outlined" id="basic-addon2">
+            <span onClick={copyToClipboard} className="input-group-text material-symbols-outlined" id="basic-addon2">
                 content_copy
             </span>
             </div>

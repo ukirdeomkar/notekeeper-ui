@@ -41,7 +41,7 @@ function Navbar() {
                 <>
                   <li className="nav-item">
                     <Link
-                      className="btn btn-primary mx-2 "
+                      className="btn btn-primary mx-2 my-1"
                       to="/login"
                       role="button"
                     >
@@ -51,7 +51,7 @@ function Navbar() {
                   <li className="nav-item">
                     {" "}
                     <Link
-                      className="btn btn-primary mx-2 "
+                      className="btn btn-primary mx-2 my-1 "
                       to="/signup"
                       role="button"
                     >

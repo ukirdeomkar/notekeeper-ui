@@ -9,6 +9,8 @@ const NoteState=(props) =>{
     const currNotes = [];
     const [notes, setNotes] = useState(currNotes);
     const [sharedNote , setSharedNote] = useState({});
+    const [shareLink, setshareLink] = useState('');
+    const ui = process.env.REACT_APP_FRONTEND_HOST_URL;
 
     const fetchNotes = async () => {
         const response = await fetch(`${host}/notekeeper/note/user/notes`, {
@@ -77,11 +79,10 @@ const NoteState=(props) =>{
        
       }
       setNotes(newNotes);
+      
     };
 
     const sharingNote = async (id , permission) => {
-      console.log('Id :' + id );
-      console.log('permission'+ permission);
 
       const response = await fetch(`${host}/notekeeper/sharenote/share/${id}`, {
         method: "POST",
@@ -91,8 +92,10 @@ const NoteState=(props) =>{
         },
         body: JSON.stringify({"sharedPermission": permission}),
       });
-      const json = await response.json();
-      console.log(json)
+      const data = await response.json();
+      let link = data.link
+
+      console.log(link);
       let newNotes = JSON.parse(JSON.stringify(notes));
       // logic to edit in client
       for (let index = 0; index < notes.length; index++) {
@@ -101,9 +104,12 @@ const NoteState=(props) =>{
         newNotes[index].permission = permission;
         break;
       }
+
      
     }
     setNotes(newNotes);
+    setshareLink(`${ui}/share/${link}`);
+
   };
   const fetchSharedNotes = async (shareId) => {
 
@@ -136,7 +142,7 @@ const NoteState=(props) =>{
 
 
   return (
-    <NoteContext.Provider value={{ notes ,sharedNote,fetchNotes ,addNote , deleteNote ,editNote , sharingNote ,fetchSharedNotes ,editSharedNote }}>
+    <NoteContext.Provider value={{ notes ,sharedNote,shareLink,fetchNotes ,addNote , deleteNote ,editNote , sharingNote ,fetchSharedNotes ,editSharedNote }}>
       {props.children}
     </NoteContext.Provider>
   )

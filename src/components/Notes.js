@@ -6,7 +6,7 @@ import NoteItem from "./NoteItem";
 function Notes() {
 
     const context = useContext(NoteContext);
-    const { notes , fetchNotes ,editNote , sharingNote } = context;
+    const { notes ,shareLink, fetchNotes ,editNote , sharingNote } = context;
     let navigate = useNavigate();
     const [note, setNote] = useState({
         etitle: "",
@@ -35,16 +35,24 @@ function Notes() {
       // eslint-disable-next-line
       [token,navigate])
 
-      const [permission, setpermission] = useState('0');
+      const [permission, setpermission] = useState(null);
       
       
       const onChange = (e) => {
         setNote({ ...note, [e.target.name]: e.target.value });
       };
       const handlePermissionChange = (e) => {
-        setpermission(e.target.value);
+        setpermission(e.target.value)
         console.log("Current Permiision: " +permission);
       };
+      useEffect(() => {
+        if(permission != null){
+          sharingNote(note.eid,permission)
+        }
+        
+        //eslint-disable-next-line
+      }, [permission])
+      
       const handleClick = (e) => {
         refClose.current.click();
         editNote(note.eid, note.etitle, note.edescription);
@@ -71,12 +79,28 @@ function Notes() {
         setpermission(currNote.permission)  
 
       };
-      const handleShareClick =(e)=>{
-        refShare.current.click();
-        sharingNote(note.eid,permission)
-        console.log("Handling share")
-      }
+      const copyToClipboard = () => {
+        const inputFields = document.getElementsByClassName('shareLink');
+        if (inputFields.length > 0) {
+          const inputField = inputFields[0];
+          inputField.select(); // Select the text in the input field
+          document.execCommand('copy'); // Copy the selected text to the clipboard
+          alert('Copied to Clipboard');
+        }
+      };
+     
+      const copyItem =<>
+        <p>Share this Link </p>
+        <div className="input-group mb-3">
 
+        <input type="text" className="form-control shareLink" defaultValue={shareLink} aria-describedby="basic-addon2"/>
+        <span onClick={copyToClipboard} className="input-group-text material-symbols-outlined" id="basic-addon2">
+            content_copy
+        </span>
+        </div>
+        </>
+      
+      
       const ref = useRef(null);
       const refClose = useRef(null);
       const refShare = useRef(null);
@@ -197,6 +221,7 @@ function Notes() {
                 aria-label='Close'></button>
             </div>
             <div className='modal-body'>
+            {permission > 0 ? copyItem  : <p>Generate Link to start sharing </p>}
               <form>
               <div className="input-group mb-3">
                 <label className="input-group-text" htmlFor="permission">Sharing Options</label>
@@ -207,18 +232,7 @@ function Notes() {
                   <option value="3">Shared with View,Edit and Delete Access</option>
                 </select>
               </div>
-              <button
-                // disabled={note.etitle < 5 || note.edescription < 5}
-                type='button'
-                className='btn btn-primary'
-                onClick={handleShareClick}>
-                Save Changes
-              </button>
               </form>
-              <div className='mb-3 my-5'>
-                  <p><strong >Title :</strong> {note.etitle}</p>
-                  <p><strong>Description :</strong> {note.edescription} </p>
-              </div>
 
             </div>
             <div className='modal-footer'>
