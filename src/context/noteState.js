@@ -3,10 +3,12 @@ import NoteContext from "./notecontext";
 
 import React from 'react'
 
+
 const NoteState=(props) =>{
     const host = process.env.REACT_APP_BACKEND_HOST_URL;
     const currNotes = [];
     const [notes, setNotes] = useState(currNotes);
+    const [sharedNote , setSharedNote] = useState({});
 
     const fetchNotes = async () => {
         const response = await fetch(`${host}/notekeeper/note/user/notes`, {
@@ -103,9 +105,23 @@ const NoteState=(props) =>{
     }
     setNotes(newNotes);
   };
+  const fetchSharedNotes = async (shareId) => {
+
+    const response = await fetch(`${host}/notekeeper/sharenote/${shareId}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const json = await response.json();
+    console.log(json);
+    setSharedNote(json);
+  };
+
+
 
   return (
-    <NoteContext.Provider value={{ notes ,fetchNotes ,addNote , deleteNote ,editNote , sharingNote}}>
+    <NoteContext.Provider value={{ notes ,sharedNote,fetchNotes ,addNote , deleteNote ,editNote , sharingNote ,fetchSharedNotes  }}>
       {props.children}
     </NoteContext.Provider>
   )

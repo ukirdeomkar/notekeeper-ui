@@ -1,32 +1,36 @@
-import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import React, {useEffect , useContext } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import NoteContext from "../context/notecontext";
 
 const SharedNote = (props) => {
   const shareId = useParams().shareId;
-  console.log(shareId);
-  // const context = useContext(NoteContext);
-  // const { deleteNote } = context;
-  //const { note, updateNote ,shareNote } = props;
-  const [note, setNote] = useState({});
-  const host = process.env.REACT_APP_BACKEND_HOST_URL;
-  const fetchNotes = async () => {
+
+const context = useContext(NoteContext);
+const {sharedNote ,fetchSharedNotes }= context;
+const host = process.env.REACT_APP_BACKEND_HOST_URL;
+const navigate = useNavigate();
+const deleteSharedNote = async(shareId) => {
+    //eslint-disable-next-line
     const response = await fetch(`${host}/notekeeper/sharenote/${shareId}`, {
-      method: "GET",
+      method: "DELETE",
       headers: {
         "Content-Type": "application/json",
-      },
+      }
     });
-    const json = await response.json();
-    console.log(json);
-    setNote(json);
+    alert("Note Deleted Succesfully")
+    navigate("/");
   };
+  //const { note, updateNote ,shareNote } = props;
+
 
   useEffect(() => {
-    fetchNotes();
-  }, []);
+    fetchSharedNotes(shareId);
+  },
+  // eslint-disable-next-line
+   []);
 
   let editBtn , deleteBtn;
-  if(note.permission===2){
+  if(sharedNote.permission>=2){
     editBtn =
      <span className="material-symbols-outlined mx-1 align-items-center icon"
     //   onClick={() => updateNote(note)}
@@ -34,34 +38,28 @@ const SharedNote = (props) => {
     edit
     </span>;
   }
-if(note.permission===3){
-    editBtn =
-    <span className="material-symbols-outlined mx-1 align-items-center icon"
-   //   onClick={() => updateNote(note)}
-   >
-   edit
-   </span>;
-    deleteBtn =               
-    <span
-    className=" material-symbols-outlined mx-1 align-items-center icon "
-    //   onClick={() => {
-    //     deleteNote(note.id);
-    //     //   showAlert("Note Deleted Successfully" , "danger");
-    //   }}
-  >
-    delete
-  </span>
-}
+    if(sharedNote.permission===3){
+        deleteBtn =               
+        <span
+        className=" material-symbols-outlined mx-1 align-items-center icon "
+        onClick={() => {
+         deleteSharedNote(shareId);
+        //     //   showAlert("Note Deleted Successfully" , "danger");
+         }}
+    >
+        delete
+    </span>
+    }
 
   return (
     <>
-    {note.permission > 0 ? 
+    {sharedNote.permission > 0 ? 
     <>
       <h5 className="text-center my-5">This Note has been Shared with you. </h5>
       <div className="container my-3">
         <div className="card">
           <div className="card-body">
-            <h5 className="card-title">{note.title}</h5>
+            <h5 className="card-title">{sharedNote.title}</h5>
             <div className="d-flex flex-row-reverse">
               <span
                 className="material-symbols-outlined  align-items-center  icon"
@@ -77,7 +75,7 @@ if(note.permission===3){
 
 
             </div>
-            <p className="card-text">{note.description}</p>
+            <p className="card-text">{sharedNote.description}</p>
           </div>
         </div>
       </div>
