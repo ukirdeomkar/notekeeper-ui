@@ -54,15 +54,19 @@ const refShare = useRef(null);
 const refShareClose = useRef(null);
 
 const deleteSharedNote = async(shareId) => {
+    const confirmed = window.confirm("Are you sure you want to delete this note?");
+    if(confirmed){
     //eslint-disable-next-line
     const response = await fetch(`${host}/notekeeper/sharenote/${shareId}`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      }
-    });
-    alert("Note Deleted Succesfully")
-    navigate("/");
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        }
+      });
+      alert("Note Deleted Succesfully")
+      navigate("/");
+    }
+
   };
   const copyToClipboard = () => {
     const inputFields = document.getElementsByClassName('shareLink');

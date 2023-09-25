@@ -42,19 +42,25 @@ const NoteState=(props) =>{
 
     const deleteNote = async(id) => {
 
-      const response = await fetch(`${host}/notekeeper/note/${id}`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization" : "Bearer "+ localStorage.getItem('token'),
-        }
-      });
-      console.log( await response.json());
-      const newNotes = notes.filter((notes) => {
-        return notes.id !== id;
-      });
-      console.log(newNotes);
-      setNotes(newNotes);
+      const confirmed = window.confirm("Are you sure you want to delete this note?");
+      if(confirmed){
+        const response = await fetch(`${host}/notekeeper/note/${id}`, {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization" : "Bearer "+ localStorage.getItem('token'),
+          }
+        });
+        console.log( await response.json());
+        const newNotes = notes.filter((notes) => {
+          return notes.id !== id;
+        });
+        console.log(newNotes);
+        setNotes(newNotes);
+        alert("Note Deleted Successfully")
+      }
+      
+
     };
     const editNote = async (id , title, description) => {
         const response = await fetch(`${host}/notekeeper/note/${id}`, {
