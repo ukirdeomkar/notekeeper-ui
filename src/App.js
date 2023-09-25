@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import NoteState from './context/noteState';
 import Signup from './components/Signup';
 import Login from './components/Login';
+import SharedNote from './components/SharedNote';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
             <Route path='/about' element={<About />} />
             <Route path='/signup' element={<Signup />} />
             <Route path='/login' element={<Login />} />
+            <Route path={'/share/:shareId'} element={<SharedNote/>} />
 
           </Routes>
     </BrowserRouter>

@@ -13,9 +13,19 @@ function Notes() {
         edescription: "",
       });
 
-    const [permission, setpermission] = useState('0');
+   // eslint-disable-next-line
+    const [token, setToken] = useState(localStorage.getItem('token') || '');
       useEffect(()=>{
-        if(localStorage.getItem('token')){
+        const isTokenExpired = (token) => {
+          if (!token) {
+            return true; 
+          }
+          const tokenData = JSON.parse(atob(token.split('.')[1])); // Decode token payload
+          const tokenExpiration = tokenData.exp * 1000; // Convert expiration time to milliseconds
+    
+          return Date.now() > tokenExpiration;
+        };
+        if(!isTokenExpired(token)){
           fetchNotes();
         }
         else{
@@ -23,7 +33,11 @@ function Notes() {
         }
       },
       // eslint-disable-next-line
-      [])
+      [token,navigate])
+
+      const [permission, setpermission] = useState('0');
+      
+      
       const onChange = (e) => {
         setNote({ ...note, [e.target.name]: e.target.value });
       };
