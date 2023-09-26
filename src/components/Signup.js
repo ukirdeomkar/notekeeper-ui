@@ -1,12 +1,32 @@
-import React,{useState, useContext} from 'react'
+import React,{useState, useContext,useEffect} from 'react'
 import { useNavigate } from "react-router-dom";
 import { Link  } from "react-router-dom";
 import AlertContext from '../context/alertContext';
 
 const Signup = () => {
+  //eslint-disable-next-line
+  const [token, setToken] = useState(localStorage.getItem('token') || '');
+  const navigate = useNavigate();
+  useEffect(()=>{
+    const isTokenExpired = (token) => {
+      if (!token) {
+        return true; 
+      }
+      const tokenData = JSON.parse(atob(token.split('.')[1])); // Decode token payload
+      const tokenExpiration = tokenData.exp * 1000; // Convert expiration time to milliseconds
 
+      return Date.now() > tokenExpiration;
+    };
+    if(!isTokenExpired(token) ){
+      navigate('/')
+    }
+    else{
+      navigate("/login");
+    }
+  },
+  // eslint-disable-next-line
+  [token,navigate])
     const host = process.env.REACT_APP_BACKEND_HOST_URL;
-    const navigate = useNavigate();
     const context1  = useContext(AlertContext);
     const{showAlert} = context1;
     const [cred, setCred] = useState({

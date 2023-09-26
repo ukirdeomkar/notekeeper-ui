@@ -7,6 +7,7 @@ function Notes() {
 
     const context = useContext(NoteContext);
     const { notes ,shareLink, fetchNotes ,editNote , sharingNote } = context;
+    const [permission, setpermission] = useState(undefined);
     let navigate = useNavigate();
     const [note, setNote] = useState({
         etitle: "",
@@ -25,7 +26,7 @@ function Notes() {
     
           return Date.now() > tokenExpiration;
         };
-        if(!isTokenExpired(token)){
+        if(!isTokenExpired(token) ){
           fetchNotes();
         }
         else{
@@ -35,7 +36,7 @@ function Notes() {
       // eslint-disable-next-line
       [token,navigate])
 
-      const [permission, setpermission] = useState(null);
+
       
       
       const onChange = (e) => {
@@ -46,7 +47,7 @@ function Notes() {
         console.log("Current Permiision: " +permission);
       };
       useEffect(() => {
-        if(permission != null){
+        if(permission !== undefined){
           note.epermission = permission
           sharingNote(note.eid,note.epermission)
         }
