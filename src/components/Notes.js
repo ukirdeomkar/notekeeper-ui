@@ -8,6 +8,7 @@ function Notes() {
     const context = useContext(NoteContext);
     const { notes ,shareLink, fetchNotes ,editNote , sharingNote } = context;
     const [permission, setpermission] = useState(undefined);
+    const [sharing, setsharing] = useState(0);
     let navigate = useNavigate();
     const [note, setNote] = useState({
         etitle: "",
@@ -46,14 +47,30 @@ function Notes() {
         setpermission(e.target.value)
         console.log("Current Permiision: " +permission);
       };
+      const handleSharingChange = (e) => {
+        setsharing(e.target.value)
+        console.log("Current Sharing: " + sharing);
+      };
       useEffect(() => {
         if(permission !== undefined){
+          note.epermission = permission
+          if(permission>0 && sharing === 0){
+            setsharing(2);
+            note.esharing=sharing;
+          }
+          sharingNote(note.eid,note.epermission,note.esharing)
+        }
+        
+        //eslint-disable-next-line
+      }, [permission])
+      useEffect(() => {
+        if(sharing === 5){
           note.epermission = permission
           sharingNote(note.eid,note.epermission)
         }
         
         //eslint-disable-next-line
-      }, [permission])
+      }, [sharing])
       
       const handleClick = (e) => {
         refClose.current.click();
@@ -76,6 +93,7 @@ function Notes() {
           etitle: currNote.title,
           edescription: currNote.description,
           epermission : currNote.permission,
+          esharing : currNote.sharing,
           
         });    
         setpermission(currNote.permission)  
@@ -101,6 +119,15 @@ function Notes() {
         </span>
         </div>
         </>
+      const AdditionShareInfo = <>
+                    <div className="input-group mb-3">
+                <label className="input-group-text" htmlFor="sharing">Additional Sharing Options</label>
+                <select className="form-select" id="sharing" name="sharing" value={sharing} onChange={handleSharingChange}>
+                 <option value="2">With Anyone</option>
+                  <option value="1">With Email</option>
+                </select>
+                </div>
+      </>
       
       
       const ref = useRef(null);
@@ -234,6 +261,7 @@ function Notes() {
                   <option value="3">Shared with View,Edit and Delete Access</option>
                 </select>
               </div>
+              {permission > 0 ? AdditionShareInfo : <p> </p>}
               </form>
 
             </div>

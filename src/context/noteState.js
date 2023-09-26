@@ -105,15 +105,20 @@ const NoteState=(props) =>{
       
     };
 
-    const sharingNote = async (id , permission) => {
-
-      const response = await fetch(`${host}/notekeeper/sharenote/share/${id}`, {
+    const sharingNote = async (id , permission , sharing) => {
+      if(permission>0 && sharing === 0){
+        sharing =2
+      }
+      if(permission===0){
+        sharing=0
+      }
+      const response = await fetch(`${host}/notekeeper/shareuser/${id}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           "Authorization" : "Bearer "+ localStorage.getItem('token'),
         },
-        body: JSON.stringify({"sharedPermission": permission}),
+        body: JSON.stringify({"sharedPermission": permission , "sharing":sharing}),
       });
       const data = await response.json();
       let link = data.link

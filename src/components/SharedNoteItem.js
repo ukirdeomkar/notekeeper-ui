@@ -35,7 +35,7 @@ const SharedNoteItem = (props) => {
               </div>
               <p className="card-text">{note.description}</p>
             </div>
-            <div class="card-footer text-muted">
+            <div className="card-footer text-muted">
             Shared By : {note.user.email}
         </div>
           </div>

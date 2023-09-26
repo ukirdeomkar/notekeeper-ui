@@ -220,6 +220,7 @@ const SharedNoteUsers = () => {
                   <option value="3">Shared with View,Edit and Delete Access</option>
                 </select>
               </div>
+
               </form>
 
             </div>
