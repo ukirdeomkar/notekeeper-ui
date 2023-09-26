@@ -47,7 +47,8 @@ function Notes() {
       };
       useEffect(() => {
         if(permission != null){
-          sharingNote(note.eid,permission)
+          note.epermission = permission
+          sharingNote(note.eid,note.epermission)
         }
         
         //eslint-disable-next-line

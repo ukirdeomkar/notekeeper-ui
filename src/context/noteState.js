@@ -26,7 +26,7 @@ const NoteState=(props) =>{
       };
 
     const addNote = async(currNotes)=>{
-      const { title, description} = currNotes;
+      const { title, description} = currNotes; 
       // eslint-disable-next-line
       const response = await fetch(`${host}/notekeeper/note/`, {
         method: "POST",
@@ -36,6 +36,11 @@ const NoteState=(props) =>{
         },
         body: JSON.stringify({ title, description }),
       });
+      const json = await response.json();
+      console.log(json);
+      currNotes.id=json.id;
+      currNotes.permission=json.permission;
+      currNotes.sharing = json.sharing;
       setNotes(notes.concat(currNotes))
       
     };

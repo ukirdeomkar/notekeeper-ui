@@ -1,11 +1,14 @@
-import React,{useState} from 'react'
+import React,{useState, useContext} from 'react'
 import { useNavigate } from "react-router-dom";
 import { Link  } from "react-router-dom";
+import AlertContext from '../context/alertContext';
 
 const Signup = () => {
 
     const host = process.env.REACT_APP_BACKEND_HOST_URL;
     const navigate = useNavigate();
+    const context1  = useContext(AlertContext);
+    const{showAlert} = context1;
     const [cred, setCred] = useState({
         name : "",
         email: "",
@@ -29,8 +32,10 @@ const Signup = () => {
           if (json.success) {
             //localStorage.setItem("token", json.authToken);
             navigate("/login");
+            showAlert("Signed Up Succesfully","success");
           } else {
-            alert(json.error);
+           
+            showAlert(json.error,"success");
           }
       }
 
