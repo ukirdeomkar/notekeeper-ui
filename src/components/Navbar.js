@@ -30,6 +30,11 @@ function Navbar() {
                   Home
                 </Link>
               </li>
+              <li>
+              <Link className="nav-link " aria-current="page" to="/shared">
+                  Shared With Me
+                </Link>
+              </li>
               <li className="nav-item">
                 <Link className="nav-link" to="about">
                   About

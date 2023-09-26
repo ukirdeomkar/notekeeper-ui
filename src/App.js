@@ -10,6 +10,7 @@ import Signup from './components/Signup';
 import Login from './components/Login';
 import SharedNote from './components/SharedNote';
 import AlertBar from './components/AlertBar';
+import SharedNoteUsers from './components/SharedNoteUsers';
 
 function App() {
   return (
@@ -24,8 +25,8 @@ function App() {
             <Route path='/about' element={<About />} />
             <Route path='/signup' element={<Signup />} />
             <Route path='/login' element={<Login />} />
+            <Route path='/shared' element={<SharedNoteUsers />} />
             <Route path={'/share/:shareId'} element={<SharedNote/>} />
-
           </Routes>
     </BrowserRouter>
     </AlertState>

@@ -24,6 +24,18 @@ const NoteState=(props) =>{
         console.log(json)
         setNotes(json);
       };
+      const fetchSharedUserNotes = async () => {
+        const response = await fetch(`${host}/notekeeper/shareuser/shared`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization" : "Bearer "+ localStorage.getItem('token'),
+          },
+        });
+        const json = await response.json();
+        console.log(json)
+        setNotes(json);
+      };
 
     const addNote = async(currNotes)=>{
       const { title, description} = currNotes; 
@@ -134,6 +146,7 @@ const NoteState=(props) =>{
     console.log(json);
     setSharedNote(json);
   };
+
   const editSharedNote = async (shareId , title, description) => {
     const response = await fetch(`${host}/notekeeper/sharenote/${shareId}`, {
       method: "PUT",
@@ -153,7 +166,7 @@ const NoteState=(props) =>{
 
 
   return (
-    <NoteContext.Provider value={{ notes ,sharedNote,shareLink,fetchNotes ,addNote , deleteNote ,editNote , sharingNote ,fetchSharedNotes ,editSharedNote }}>
+    <NoteContext.Provider value={{ notes ,sharedNote,shareLink,fetchNotes ,addNote , deleteNote ,editNote , sharingNote ,fetchSharedNotes ,editSharedNote , fetchSharedUserNotes }}>
       {props.children}
     </NoteContext.Provider>
   )
