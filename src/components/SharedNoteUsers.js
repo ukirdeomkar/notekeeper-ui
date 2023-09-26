@@ -13,6 +13,8 @@ const SharedNoteUsers = () => {
         edescription: "",
       });
 
+
+
    // eslint-disable-next-line
     const [token, setToken] = useState(localStorage.getItem('token') || '');
       useEffect(()=>{
@@ -40,6 +42,9 @@ const SharedNoteUsers = () => {
         
         //eslint-disable-next-line
       }, [permission])
+
+
+
       
       const handleClick = (e) => {
         refClose.current.click();
@@ -210,7 +215,7 @@ const SharedNoteUsers = () => {
             </div>
             <div className='modal-body'>
             {permission > 0 ? copyItem  : <p>Generate Link to start sharing </p>}
-              <form>
+              
               <div className="input-group mb-3">
                 <label className="input-group-text" htmlFor="permission">Sharing Options</label>
                 <select className="form-select" id="permission" name="permission" value={permission} onChange={handlePermissionChange}>
@@ -221,7 +226,10 @@ const SharedNoteUsers = () => {
                 </select>
               </div>
 
-              </form>
+
+
+
+              
 
             </div>
             <div className='modal-footer'>

@@ -10,6 +10,7 @@ const NoteState=(props) =>{
     const [notes, setNotes] = useState(currNotes);
     const [sharedNote , setSharedNote] = useState({});
     const [shareLink, setshareLink] = useState('');
+
     const ui = process.env.REACT_APP_FRONTEND_HOST_URL;
 
     const fetchNotes = async () => {
@@ -105,7 +106,7 @@ const NoteState=(props) =>{
       
     };
 
-    const sharingNote = async (id , permission , sharing) => {
+    const sharingNote = async (id , permission , sharing , email) => {
       if(permission>0 && sharing === 0){
         sharing =2
       }
@@ -118,7 +119,7 @@ const NoteState=(props) =>{
           "Content-Type": "application/json",
           "Authorization" : "Bearer "+ localStorage.getItem('token'),
         },
-        body: JSON.stringify({"sharedPermission": permission , "sharing":sharing}),
+        body: JSON.stringify({"sharedPermission": permission , "sharing":sharing , "email":email}),
       });
       const data = await response.json();
       let link = data.link

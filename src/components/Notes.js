@@ -9,6 +9,10 @@ function Notes() {
     const { notes ,shareLink, fetchNotes ,editNote , sharingNote } = context;
     const [permission, setpermission] = useState(undefined);
     const [sharing, setsharing] = useState(0);
+    const [isSharingEmail , setisSharingEmail] = useState(false);
+    const [cred, setCred] = useState({
+      email: "",
+    });
     let navigate = useNavigate();
     const [note, setNote] = useState({
         etitle: "",
@@ -51,6 +55,14 @@ function Notes() {
         setsharing(e.target.value)
         console.log("Current Sharing: " + sharing);
       };
+
+      const onEmailChange = (e) => {
+          setCred({ ...cred, [e.target.name]: e.target.value });
+        };
+        const handleAddEmail = async (e) => {
+          e.preventDefault()
+          sharingNote(note.eid,note.epermission,sharing,cred.email)
+        };
       useEffect(() => {
         if(permission !== undefined){
           note.epermission = permission
@@ -64,9 +76,12 @@ function Notes() {
         //eslint-disable-next-line
       }, [permission])
       useEffect(() => {
-        if(sharing === 5){
-          note.epermission = permission
-          sharingNote(note.eid,note.epermission)
+        console.log("sharing value changed:"+ sharing);
+        if(sharing==='1'){
+          setisSharingEmail(true)
+        }
+        else{
+          setisSharingEmail(false)
         }
         
         //eslint-disable-next-line
@@ -127,6 +142,28 @@ function Notes() {
                   <option value="1">With Email</option>
                 </select>
                 </div>
+      </>
+      const EmailItem = <>
+              <form onSubmit={handleAddEmail}>
+        <div className='mb-3'>
+          <label htmlFor='exampleInputEmail1' className='form-label'>
+            Email address
+          </label>
+          <input
+            type='email'
+            className='form-control'
+            id='email'
+            name='email'
+            aria-describedby='emailHelp'
+            onChange={onEmailChange}
+            value={cred.email}
+          />
+          
+        </div>
+        <button type='submit' className='btn btn-primary'>
+          Add
+        </button>
+      </form>
       </>
       
       
@@ -251,7 +288,7 @@ function Notes() {
             </div>
             <div className='modal-body'>
             {permission > 0 ? copyItem  : <p>Generate Link to start sharing </p>}
-              <form>
+              
               <div className="input-group mb-3">
                 <label className="input-group-text" htmlFor="permission">Sharing Options</label>
                 <select className="form-select" id="permission" name="permission" value={permission} onChange={handlePermissionChange}>
@@ -261,8 +298,9 @@ function Notes() {
                   <option value="3">Shared with View,Edit and Delete Access</option>
                 </select>
               </div>
-              {permission > 0 ? AdditionShareInfo : <p> </p>}
-              </form>
+              {permission > 0 ? <>{AdditionShareInfo} </>: <p> </p>}
+              {isSharingEmail ? EmailItem : <p> </p>}
+              
 
             </div>
             <div className='modal-footer'>
