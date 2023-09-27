@@ -80,6 +80,51 @@ const NoteState=(props) =>{
       
 
     };
+    const deleteNoteSharedUser = async(id) => {
+
+      const confirmed = window.confirm("Are you sure you want to delete this note?");
+      if(confirmed){
+        const response = await fetch(`${host}/notekeeper/shareuser/${id}`, {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization" : "Bearer "+ localStorage.getItem('token'),
+          }
+        });
+        console.log( await response.json());
+        const newNotes = notes.filter((notes) => {
+          return notes.id !== id;
+        });
+        console.log(newNotes);
+        setNotes(newNotes);
+        alert("Note Deleted Successfully")
+      }
+      
+
+    };
+    const RemoveSharedUserAccess = async(id , email) => {
+
+      const confirmed = window.confirm("Are you sure you want to delete this note?");
+      if(confirmed){
+        const response = await fetch(`${host}/notekeeper/shareuser/user/${id}`, {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization" : "Bearer "+ localStorage.getItem('token'),
+            body: JSON.stringify({ email}),
+          }
+        });
+        console.log( await response.json());
+        const newNotes = notes.filter((notes) => {
+          return notes.id !== id;
+        });
+        console.log(newNotes);
+        setNotes(newNotes);
+        alert("Note Deleted Successfully")
+      }
+      
+
+    };
     const editNote = async (id , title, description) => {
         const response = await fetch(`${host}/notekeeper/note/${id}`, {
           method: "PUT",
@@ -105,6 +150,31 @@ const NoteState=(props) =>{
       setNotes(newNotes);
       
     };
+    const editNoteSharedUser = async (id , title, description) => {
+      const response = await fetch(`${host}/notekeeper/shareuser/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization" : "Bearer "+ localStorage.getItem('token'),
+        },
+        body: JSON.stringify({ title, description}),
+      });
+      const json = await response.json();
+      console.log(json)
+      let newNotes = JSON.parse(JSON.stringify(notes));
+      // logic to edit in client
+      for (let index = 0; index < notes.length; index++) {
+      const element = newNotes[index];
+      if (element.id === id) {
+        newNotes[index].title = title;
+        newNotes[index].description = description;
+        break;
+      }
+     
+    }
+    setNotes(newNotes);
+    
+  };
 
     const sharingNote = async (id , permission , sharing , email) => {
       if(permission>0 && sharing === 0){
