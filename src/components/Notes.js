@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import NoteContext from "../context/notecontext";
 import NoteItem from "./NoteItem";
+import ManageEmail from "./ManageEmail";
 
 function Notes() {
 
@@ -9,10 +10,7 @@ function Notes() {
     const { notes ,shareLink, fetchNotes ,editNote , sharingNote } = context;
     const [permission, setpermission] = useState(undefined);
     const [sharing, setsharing] = useState(0);
-    const [isSharingEmail , setisSharingEmail] = useState(false);
-    const [cred, setCred] = useState({
-      email: "",
-    });
+
     let navigate = useNavigate();
     const [note, setNote] = useState({
         etitle: "",
@@ -56,36 +54,20 @@ function Notes() {
         console.log("Current Sharing: " + sharing);
       };
 
-      const onEmailChange = (e) => {
-          setCred({ ...cred, [e.target.name]: e.target.value });
-        };
-        const handleAddEmail = async (e) => {
-          e.preventDefault()
-          sharingNote(note.eid,note.epermission,sharing,cred.email)
-        };
+
       useEffect(() => {
-        if(permission !== undefined){
+        if(permission !== undefined && sharing!==undefined){
           note.epermission = permission
           if(permission>0 && sharing === 0){
             setsharing('2');
             note.esharing=sharing;
           }
-          sharingNote(note.eid,note.epermission,note.esharing)
+          sharingNote(note.eid,note.epermission,sharing)
         }
-        
-        //eslint-disable-next-line
-      }, [permission])
-      useEffect(() => {
         console.log("sharing value changed:"+ sharing);
-        if(sharing==='1'){
-          setisSharingEmail(true)
-        }
-        else{
-          setisSharingEmail(false)
-        }
-        
         //eslint-disable-next-line
-      }, [sharing])
+      }, [permission,sharing])
+
       
       const handleClick = (e) => {
         refClose.current.click();
@@ -143,28 +125,6 @@ function Notes() {
                   <option value="1">With Email</option>
                 </select>
                 </div>
-      </>
-      const EmailItem = <>
-              <form onSubmit={handleAddEmail}>
-        <div className='mb-3'>
-          <label htmlFor='exampleInputEmail1' className='form-label'>
-            Email address
-          </label>
-          <input
-            type='email'
-            className='form-control'
-            id='email'
-            name='email'
-            aria-describedby='emailHelp'
-            onChange={onEmailChange}
-            value={cred.email}
-          />
-          
-        </div>
-        <button type='submit' className='btn btn-primary'>
-          Add
-        </button>
-      </form>
       </>
       
       
@@ -300,7 +260,7 @@ function Notes() {
                 </select>
               </div>
               {permission > 0 ? <>{AdditionShareInfo} </>: <p> </p>}
-              {isSharingEmail ? EmailItem : <p> </p>}
+              {sharing==="1" ? <ManageEmail note={note} sharing={sharing}/> : <p> </p>}
               
 
             </div>

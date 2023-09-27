@@ -201,6 +201,7 @@ const NoteState=(props) =>{
       const element = newNotes[index];
       if (element.id === id) {
         newNotes[index].permission = permission;
+        newNotes[index].sharing = sharing;
         break;
       }
 
