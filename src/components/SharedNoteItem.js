@@ -3,13 +3,13 @@ import React, { useContext } from "react";
 import NoteContext from "../context/notecontext";
 const SharedNoteItem = (props) => {
     const context = useContext(NoteContext);
-    const { deleteNote } = context;
+    const { deleteNoteSharedUser } = context;
     const { note, updateNote ,shareNote } = props;
     let editBtn , deleteBtn;
     if(note.permission>=2){
       editBtn =
        <span className="material-symbols-outlined mx-1 align-items-center icon"
-        //  onClick={() => updateNote(sharedNote)}
+        onClick={() => updateNote(note)}
       >
       edit
       </span>;
@@ -19,7 +19,7 @@ const SharedNoteItem = (props) => {
           <span
           className=" material-symbols-outlined mx-1 align-items-center icon "
           onClick={() => {
-          //  deleteSharedNote(shareId);
+           deleteNoteSharedUser(note.id);
           //     //   showAlert("Note Deleted Successfully" , "danger");
            }}
       >

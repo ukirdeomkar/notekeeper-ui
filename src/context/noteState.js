@@ -242,7 +242,7 @@ const NoteState=(props) =>{
 
 
   return (
-    <NoteContext.Provider value={{ notes ,sharedNote,shareLink,fetchNotes ,addNote , deleteNote ,editNote , sharingNote ,fetchSharedNotes ,editSharedNote , fetchSharedUserNotes }}>
+    <NoteContext.Provider value={{ notes ,sharedNote,shareLink,fetchNotes ,addNote , deleteNote ,editNote , sharingNote ,fetchSharedNotes ,editSharedNote , fetchSharedUserNotes ,editNoteSharedUser ,deleteNoteSharedUser ,RemoveSharedUserAccess }}>
       {props.children}
     </NoteContext.Provider>
   )

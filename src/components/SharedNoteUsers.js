@@ -5,7 +5,7 @@ import NoteContext from "../context/notecontext";
 import SharedNoteItem from "./SharedNoteItem";
 const SharedNoteUsers = () => {
     const context = useContext(NoteContext);
-    const { notes ,shareLink, fetchSharedUserNotes ,editNote , sharingNote } = context;
+    const { notes ,shareLink, fetchSharedUserNotes , sharingNote, editNoteSharedUser } = context;
     const [permission, setpermission] = useState(undefined);
     let navigate = useNavigate();
     const [note, setNote] = useState({
@@ -48,7 +48,7 @@ const SharedNoteUsers = () => {
       
       const handleClick = (e) => {
         refClose.current.click();
-        editNote(note.eid, note.etitle, note.edescription);
+        editNoteSharedUser(note.eid, note.etitle, note.edescription);
         //showAlert("Note Updated Successfully" , "success");
       };
       const updateNote = (currNote) => {
