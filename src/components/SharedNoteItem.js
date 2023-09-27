@@ -5,6 +5,27 @@ const SharedNoteItem = (props) => {
     const context = useContext(NoteContext);
     const { deleteNote } = context;
     const { note, updateNote ,shareNote } = props;
+    let editBtn , deleteBtn;
+    if(note.permission>=2){
+      editBtn =
+       <span className="material-symbols-outlined mx-1 align-items-center icon"
+        //  onClick={() => updateNote(sharedNote)}
+      >
+      edit
+      </span>;
+    }
+      if(note.permission===3){
+          deleteBtn =               
+          <span
+          className=" material-symbols-outlined mx-1 align-items-center icon "
+          onClick={() => {
+          //  deleteSharedNote(shareId);
+          //     //   showAlert("Note Deleted Successfully" , "danger");
+           }}
+      >
+          delete
+      </span>
+      }
     return (
       <>
         <div className="col-md-4 my-2">
@@ -17,21 +38,8 @@ const SharedNoteItem = (props) => {
                 >
                   share
                 </span>
-                <span
-                  className=" material-symbols-outlined mx-1 align-items-center icon "
-                  onClick={() => {
-                    deleteNote(note.id);
-                    //   showAlert("Note Deleted Successfully" , "danger");
-                  }}
-                >
-                  delete
-                </span>
-                <span
-                  className="material-symbols-outlined mx-1 align-items-center icon"
-                  onClick={() => updateNote(note)}
-                >
-                  edit
-                </span>
+                {deleteBtn}
+              {editBtn}
               </div>
               <p className="card-text">{note.description}</p>
             </div>

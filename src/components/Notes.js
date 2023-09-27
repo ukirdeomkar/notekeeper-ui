@@ -67,7 +67,7 @@ function Notes() {
         if(permission !== undefined){
           note.epermission = permission
           if(permission>0 && sharing === 0){
-            setsharing(2);
+            setsharing('2');
             note.esharing=sharing;
           }
           sharingNote(note.eid,note.epermission,note.esharing)
@@ -111,7 +111,8 @@ function Notes() {
           esharing : currNote.sharing,
           
         });    
-        setpermission(currNote.permission)  
+        setpermission(currNote.permission) 
+        setsharing(currNote.sharing) 
 
       };
       const copyToClipboard = () => {
