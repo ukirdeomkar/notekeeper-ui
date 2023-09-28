@@ -262,7 +262,7 @@ function Notes() {
               {permission > 0 ? <>{AdditionShareInfo} </>: <p> </p>}
               {
                 // eslint-disable-next-line
-                sharing=="1" ? <ManageEmail note={note} sharing={sharing}/> : <p> </p>
+                sharing=="1" ? <ManageEmail note={note} sharing={sharing}  permission={permission}/> : <p> </p>
               }
               
 
