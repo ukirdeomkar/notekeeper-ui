@@ -58,8 +58,8 @@ function Notes() {
       useEffect(() => {
         if(permission !== undefined && sharing!==undefined){
           note.epermission = permission
-          if(permission>0 && sharing === '0'){
-            setsharing('2');
+          if(permission>0 && sharing == '0'){
+            setsharing("2");
             note.esharing=sharing;
           }
           sharingNote(note.eid,note.epermission,sharing)
