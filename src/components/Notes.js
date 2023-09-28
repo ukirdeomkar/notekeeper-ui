@@ -58,6 +58,7 @@ function Notes() {
       useEffect(() => {
         if(permission !== undefined && sharing!==undefined){
           note.epermission = permission
+          //eslint-disable-next-line
           if(permission>0 && sharing == '0'){
             setsharing("2");
             note.esharing=sharing;

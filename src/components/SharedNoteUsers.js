@@ -5,8 +5,7 @@ import NoteContext from "../context/notecontext";
 import SharedNoteItem from "./SharedNoteItem";
 const SharedNoteUsers = () => {
     const context = useContext(NoteContext);
-    const { notes ,shareLink, fetchSharedUserNotes , sharingNote, editNoteSharedUser ,sharingNoteEmail } = context;
-    const [permission, setpermission] = useState(undefined);
+    const { notes ,shareLink, fetchSharedUserNotes , editNoteSharedUser ,sharingNoteEmail } = context;
     let navigate = useNavigate();
     const [note, setNote] = useState({
         etitle: "",
@@ -30,18 +29,6 @@ const SharedNoteUsers = () => {
       const onChange = (e) => {
         setNote({ ...note, [e.target.name]: e.target.value });
       };
-      const handlePermissionChange = (e) => {
-        setpermission(e.target.value)
-        console.log("Current Permiision: " +permission);
-      };
-      useEffect(() => {
-        if(permission !== undefined){
-          note.epermission = permission
-          sharingNote(note.eid,note.epermission)
-        }
-        
-        //eslint-disable-next-line
-      }, [permission])
 
 
 
