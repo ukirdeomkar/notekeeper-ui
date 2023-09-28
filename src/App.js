@@ -15,8 +15,9 @@ import SharedNoteUsers from './components/SharedNoteUsers';
 function App() {
   return (
     <>
+    <AlertState>
     <NoteState>
-      <AlertState>
+      
     <BrowserRouter>
     <Navbar/>
     <AlertBar/>
@@ -31,8 +32,9 @@ function App() {
 
           </Routes>
     </BrowserRouter>
-    </AlertState>
+    
     </NoteState>
+    </AlertState>
     </>
   );
 }

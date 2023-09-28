@@ -5,6 +5,7 @@ import NoteContext from "../context/notecontext";
 import SharedNoteItem from "./SharedNoteItem";
 const SharedNoteUsers = () => {
     const context = useContext(NoteContext);
+    
     const { notes ,shareLink, fetchSharedUserNotes , editNoteSharedUser ,sharingNoteEmail } = context;
     let navigate = useNavigate();
     const [note, setNote] = useState({

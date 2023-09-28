@@ -7,6 +7,7 @@ import ManageEmail from "./ManageEmail";
 function Notes() {
 
     const context = useContext(NoteContext);
+    
     const { notes ,shareLink, fetchNotes ,editNote , sharingNote } = context;
     const [permission, setpermission] = useState(undefined);
     const [sharing, setsharing] = useState(0);

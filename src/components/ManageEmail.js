@@ -23,7 +23,10 @@ const ManageEmail = (props) => {
     });
     const json = await response.json();
     console.log(json)
-    setEmails(json);
+    if(!json.error){
+      setEmails(json);
+    }
+    
   };
   const addEmailApi = async(emailListToAdd)=>{
     // eslint-disable-next-line
@@ -86,7 +89,8 @@ const ManageEmail = (props) => {
 
 
     return (
-      <ul>
+      emailList.length > 0 &&(
+        <ul>
         {emailList.map((email, index) => (
           <li key={index}>
             {email}{' '}
@@ -96,6 +100,7 @@ const ManageEmail = (props) => {
           </li>
         ))}
       </ul>
+      )
     );
   }
   function EmailForm({ onAddEmail }) {

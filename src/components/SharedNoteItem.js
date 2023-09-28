@@ -20,7 +20,6 @@ const SharedNoteItem = (props) => {
           className=" material-symbols-outlined mx-1 align-items-center icon "
           onClick={() => {
            deleteNoteSharedUser(note.id);
-          //     //   showAlert("Note Deleted Successfully" , "danger");
            }}
       >
           delete

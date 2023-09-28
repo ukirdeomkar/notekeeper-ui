@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useState ,useContext} from "react";
 import NoteContext from "./notecontext";
 import React from 'react'
+import AlertContext from "./alertContext";
 
 
 const NoteState=(props) =>{
@@ -11,6 +12,8 @@ const NoteState=(props) =>{
     const [shareLink, setshareLink] = useState('');
 
     const ui = process.env.REACT_APP_FRONTEND_HOST_URL;
+    const context1  = useContext(AlertContext);
+    const{showAlert} = context1;
 
     const fetchNotes = async () => {
         const response = await fetch(`${host}/notekeeper/note/user/notes`, {
@@ -55,6 +58,7 @@ const NoteState=(props) =>{
       currNotes.permission=json.permission;
       currNotes.sharing = json.sharing;
       setNotes(notes.concat(currNotes))
+      showAlert("Note Added Successfully","success")
       
     };
 
@@ -75,7 +79,7 @@ const NoteState=(props) =>{
         });
         console.log(newNotes);
         setNotes(newNotes);
-        alert("Note Deleted Successfully")
+        showAlert("Note Deleted Successfully","danger")
       }
       
 
@@ -97,7 +101,7 @@ const NoteState=(props) =>{
         });
         console.log(newNotes);
         setNotes(newNotes);
-        alert("Note Deleted Successfully")
+        showAlert("Note Deleted Successfully","danger")
       }
       
 
@@ -120,7 +124,7 @@ const NoteState=(props) =>{
         });
         console.log(newNotes);
         setNotes(newNotes);
-        alert("Note Deleted Successfully")
+        showAlert("Note Deleted Successfully","danger")
       }
       
 
@@ -148,6 +152,7 @@ const NoteState=(props) =>{
        
       }
       setNotes(newNotes);
+      showAlert("Note Updated Successfully","success")
       
     };
     const editNoteSharedUser = async (id , title, description) => {
@@ -173,6 +178,7 @@ const NoteState=(props) =>{
      
     }
     setNotes(newNotes);
+    showAlert("Note Updated Successfully","success")
     
   };
 
@@ -253,6 +259,7 @@ const sharingNoteEmail = async (id) => {
       newNote.title = title;
       newNote.description = description;
   setSharedNote(newNote);
+  showAlert("Note Updated Successfully","success")
 };
 
 

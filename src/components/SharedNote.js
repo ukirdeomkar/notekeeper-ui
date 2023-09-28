@@ -1,8 +1,11 @@
 import React, {useState,useEffect , useContext ,useRef} from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import NoteContext from "../context/notecontext";
+import AlertContext from "../context/alertContext";
 
 const SharedNote = (props) => {
+  const context1  = useContext(AlertContext);
+  const{showAlert} = context1;
   const { shareId } = useParams();
   const isEmailsRoute = window.location.pathname.includes('emails');
   console.log(isEmailsRoute);
@@ -73,7 +76,7 @@ const deleteSharedNote = async(shareId) => {
         }
       });
       if(response.status === 200){
-        alert("Note Deleted Succesfully")
+        showAlert("Note Deleted Successfully","danger")
         navigate("/");
       }
      
@@ -86,7 +89,7 @@ const deleteSharedNote = async(shareId) => {
       const inputField = inputFields[0];
       inputField.select(); // Select the text in the input field
       document.execCommand('copy'); // Copy the selected text to the clipboard
-      alert('Copied to Clipboard');
+      showAlert("Note Updated Successfully","success")
     }
   };
   const deleteNoteSharedUser = async(id) => {
@@ -102,7 +105,7 @@ const deleteSharedNote = async(shareId) => {
       });
       const json = await response.json();
       if(json.success){
-        alert("Note Deleted Successfully")
+        showAlert("Note Deleted Successfully","danger")
         navigate("/")
       }
 
