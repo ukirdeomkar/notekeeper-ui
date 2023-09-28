@@ -62,6 +62,9 @@ function Notes() {
             setsharing('2');
             note.esharing=sharing;
           }
+          if(permission===0){
+            setsharing('0');
+          }
           sharingNote(note.eid,note.epermission,sharing)
         }
         console.log("sharing value changed:"+ sharing);
@@ -262,7 +265,7 @@ function Notes() {
               {permission > 0 ? <>{AdditionShareInfo} </>: <p> </p>}
               {
                 // eslint-disable-next-line
-                sharing=="1" ? <ManageEmail note={note} sharing={sharing}  permission={permission}/> : <p> </p>
+                sharing=="1"&& permission > 0 ? <ManageEmail note={note} sharing={sharing}  permission={permission}/> : <p> </p>
               }
               
 
