@@ -71,8 +71,11 @@ const deleteSharedNote = async(shareId) => {
           "Content-Type": "application/json",
         }
       });
-      alert("Note Deleted Succesfully")
-      navigate("/");
+      if(response.status === 200){
+        alert("Note Deleted Succesfully")
+        navigate("/");
+      }
+     
     }
 
   };
@@ -84,6 +87,28 @@ const deleteSharedNote = async(shareId) => {
       document.execCommand('copy'); // Copy the selected text to the clipboard
       alert('Copied to Clipboard');
     }
+  };
+  const deleteNoteSharedUser = async(id) => {
+
+    const confirmed = window.confirm("Are you sure you want to delete this note?");
+    if(confirmed){
+      const response = await fetch(`${host}/notekeeper/shareuser/${id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization" : "Bearer "+ localStorage.getItem('token'),
+        }
+      });
+      const json = await response.json();
+      if(json.success){
+        alert("Note Deleted Successfully")
+        navigate("/")
+      }
+
+      
+    }
+    
+
   };
 
 
@@ -106,9 +131,9 @@ const deleteSharedNote = async(shareId) => {
         <span
         className=" material-symbols-outlined mx-1 align-items-center icon "
         onClick={() => {
-         deleteSharedNote(shareId);
+          !isEmailsRoute ?deleteSharedNote(shareId) : deleteNoteSharedUser(shareId)
         //     //   showAlert("Note Deleted Successfully" , "danger");
-         }}
+         }}    
     >
         delete
     </span>
