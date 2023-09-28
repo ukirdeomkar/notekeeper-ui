@@ -111,6 +111,7 @@ const ManageEmail = (props) => {
     return (
       <div>
         <input
+        className='form-control'
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}

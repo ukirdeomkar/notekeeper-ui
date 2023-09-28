@@ -110,7 +110,7 @@ function Notes() {
         <p>Share this Link </p>
         <div className="input-group mb-3">
 
-        <input type="text" className="form-control shareLink" defaultValue={shareLink} aria-describedby="basic-addon2"/>
+        <input type="text" className="form-control shareLink" defaultValue={shareLink} aria-describedby="basic-addon2" />
         <span onClick={copyToClipboard} className="input-group-text material-symbols-outlined" id="basic-addon2">
             content_copy
         </span>

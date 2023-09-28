@@ -3,14 +3,22 @@ import { useNavigate, useParams } from "react-router-dom";
 import NoteContext from "../context/notecontext";
 
 const SharedNote = (props) => {
-  const shareId = useParams().shareId;
+  const { shareId } = useParams();
+  const isEmailsRoute = window.location.pathname.includes('emails');
+  console.log(isEmailsRoute);
   useEffect(() => {
-    fetchSharedNotes(shareId);
+    if(!isEmailsRoute){
+      fetchSharedNotes(shareId);
+    }
+    else{
+      fetchSharedToEmailNotes(shareId);
+    }
+     
   },
   // eslint-disable-next-line
    []);
 const context = useContext(NoteContext);
-const {sharedNote ,fetchSharedNotes,editSharedNote }= context;
+const {sharedNote ,fetchSharedNotes,editSharedNote , fetchSharedToEmailNotes}= context;
 const host = process.env.REACT_APP_BACKEND_HOST_URL;
 var shareLink = window.location.href;
 const navigate = useNavigate();

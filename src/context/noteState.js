@@ -36,6 +36,7 @@ const NoteState=(props) =>{
         console.log(json)
         setNotes(json);
       };
+      
 
     const addNote = async(currNotes)=>{
       const { title, description} = currNotes; 
@@ -199,7 +200,8 @@ const NoteState=(props) =>{
       }    
     }
     setNotes(newNotes);
-    if(sharing === 1){
+    //eslint-disable-next-line
+    if(sharing == '1'){
       setshareLink(`${ui}/share/emails/${link}`)
     }
     else{
@@ -214,6 +216,19 @@ const NoteState=(props) =>{
       method: "GET",
       headers: {
         "Content-Type": "application/json",
+      },
+    });
+    const json = await response.json();
+    console.log(json);
+    setSharedNote(json);
+  };
+  const fetchSharedToEmailNotes = async (shareId) => {
+
+    const response = await fetch(`${host}/notekeeper/shareuser/${shareId}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization" : "Bearer "+ localStorage.getItem('token'),
       },
     });
     const json = await response.json();
@@ -240,7 +255,11 @@ const NoteState=(props) =>{
 
 
   return (
-    <NoteContext.Provider value={{ notes ,sharedNote,shareLink,setshareLink,fetchNotes ,addNote , deleteNote ,editNote , sharingNote ,fetchSharedNotes ,editSharedNote , fetchSharedUserNotes ,editNoteSharedUser ,deleteNoteSharedUser ,RemoveSharedUserAccess }}>
+    <NoteContext.Provider value={{ 
+    notes ,sharedNote,shareLink,setshareLink,
+    fetchNotes ,addNote , deleteNote ,editNote , 
+    sharingNote ,fetchSharedNotes ,editSharedNote , fetchSharedUserNotes 
+    ,editNoteSharedUser ,deleteNoteSharedUser ,RemoveSharedUserAccess, fetchSharedToEmailNotes }}>
       {props.children}
     </NoteContext.Provider>
   )

@@ -27,6 +27,8 @@ function App() {
             <Route path='/login' element={<Login />} />
             <Route path='/shared' element={<SharedNoteUsers />} />
             <Route path={'/share/:shareId'} element={<SharedNote/>} />
+            <Route path={'/share/emails/:shareId'} element={<SharedNote/>} />
+
           </Routes>
     </BrowserRouter>
     </AlertState>
