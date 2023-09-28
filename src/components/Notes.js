@@ -58,18 +58,14 @@ function Notes() {
       useEffect(() => {
         if(permission !== undefined && sharing!==undefined){
           note.epermission = permission
-          if(permission>0 && sharing === 0){
+          if(permission>0 && sharing === '0'){
             setsharing('2');
             note.esharing=sharing;
           }
-          if(permission===0){
-            setsharing('0');
-          }
           sharingNote(note.eid,note.epermission,sharing)
         }
-        console.log("sharing value changed:"+ sharing);
         //eslint-disable-next-line
-      }, [permission,sharing])
+      }, [permission,sharing, shareLink])
 
       
       const handleClick = (e) => {

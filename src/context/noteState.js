@@ -176,12 +176,6 @@ const NoteState=(props) =>{
   };
 
     const sharingNote = async (id , permission , sharing , email) => {
-      if(permission>0 && sharing === 0){
-        sharing =2
-      }
-      if(permission===0){
-        sharing=0
-      }
       const response = await fetch(`${host}/notekeeper/shareuser/${id}`, {
         method: "POST",
         headers: {
@@ -202,12 +196,16 @@ const NoteState=(props) =>{
         newNotes[index].permission = permission;
         newNotes[index].sharing = sharing;
         break;
-      }
-
-     
+      }    
     }
     setNotes(newNotes);
-    setshareLink(`${ui}/share/${link}`);
+    if(sharing === 1){
+      setshareLink(`${ui}/share/emails/${link}`)
+    }
+    else{
+      setshareLink(`${ui}/share/${link}`);
+    }
+    
 
   };
   const fetchSharedNotes = async (shareId) => {
@@ -242,7 +240,7 @@ const NoteState=(props) =>{
 
 
   return (
-    <NoteContext.Provider value={{ notes ,sharedNote,shareLink,fetchNotes ,addNote , deleteNote ,editNote , sharingNote ,fetchSharedNotes ,editSharedNote , fetchSharedUserNotes ,editNoteSharedUser ,deleteNoteSharedUser ,RemoveSharedUserAccess }}>
+    <NoteContext.Provider value={{ notes ,sharedNote,shareLink,setshareLink,fetchNotes ,addNote , deleteNote ,editNote , sharingNote ,fetchSharedNotes ,editSharedNote , fetchSharedUserNotes ,editNoteSharedUser ,deleteNoteSharedUser ,RemoveSharedUserAccess }}>
       {props.children}
     </NoteContext.Provider>
   )

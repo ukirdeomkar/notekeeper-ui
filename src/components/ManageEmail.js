@@ -1,11 +1,8 @@
-import React, { useState, useContext ,useEffect} from "react";
-import NoteContext from "../context/notecontext";
+import React, { useState ,useEffect} from "react";
 
 const ManageEmail = (props) => {
 
     const host = process.env.REACT_APP_BACKEND_HOST_URL;
-  const context = useContext(NoteContext);
-  const { sharingNote } = context;
   const { note, sharing ,permission} = props;
 
   const [emails, setEmails] = useState([]);
