@@ -210,6 +210,9 @@ const NoteState=(props) =>{
     
 
   };
+const sharingNoteEmail = async (id) => {
+    setshareLink(`${ui}/share/emails/${id}`)
+};
   const fetchSharedNotes = async (shareId) => {
 
     const response = await fetch(`${host}/notekeeper/sharenote/${shareId}`, {
@@ -259,7 +262,7 @@ const NoteState=(props) =>{
     notes ,sharedNote,shareLink,setshareLink,
     fetchNotes ,addNote , deleteNote ,editNote , 
     sharingNote ,fetchSharedNotes ,editSharedNote , fetchSharedUserNotes 
-    ,editNoteSharedUser ,deleteNoteSharedUser ,RemoveSharedUserAccess, fetchSharedToEmailNotes }}>
+    ,editNoteSharedUser ,deleteNoteSharedUser ,RemoveSharedUserAccess, fetchSharedToEmailNotes , sharingNoteEmail }}>
       {props.children}
     </NoteContext.Provider>
   )

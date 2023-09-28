@@ -5,7 +5,7 @@ import NoteContext from "../context/notecontext";
 import SharedNoteItem from "./SharedNoteItem";
 const SharedNoteUsers = () => {
     const context = useContext(NoteContext);
-    const { notes ,shareLink, fetchSharedUserNotes , sharingNote, editNoteSharedUser } = context;
+    const { notes ,shareLink, fetchSharedUserNotes , sharingNote, editNoteSharedUser ,sharingNoteEmail } = context;
     const [permission, setpermission] = useState(undefined);
     let navigate = useNavigate();
     const [note, setNote] = useState({
@@ -61,15 +61,8 @@ const SharedNoteUsers = () => {
         });      
       };
       const shareNote = (currNote) => {
-        refShare.current.click();
-        setNote({
-          eid : currNote.id,
-          etitle: currNote.title,
-          edescription: currNote.description,
-          epermission : currNote.permission,
-          
-        });    
-        setpermission(currNote.permission)  
+        refShare.current.click();    
+        sharingNoteEmail(currNote.id)
 
       };
       const copyToClipboard = () => {
@@ -214,23 +207,8 @@ const SharedNoteUsers = () => {
                 aria-label='Close'></button>
             </div>
             <div className='modal-body'>
-            {permission > 0 ? copyItem  : <p>Generate Link to start sharing </p>}
-              
-              <div className="input-group mb-3">
-                <label className="input-group-text" htmlFor="permission">Sharing Options</label>
-                <select className="form-select" id="permission" name="permission" value={permission} onChange={handlePermissionChange}>
-                  <option value="0">Private</option>
-                  <option value="1">Shared with View Only Access</option>
-                  <option value="2">Shared with View and Edit Access</option>
-                  <option value="3">Shared with View,Edit and Delete Access</option>
-                </select>
-              </div>
-
-
-
-
-              
-
+            { copyItem }
+            
             </div>
             <div className='modal-footer'>
               <button
@@ -256,7 +234,7 @@ const SharedNoteUsers = () => {
         {notes.map((note) => {
           return (
             <SharedNoteItem key={note.id} note={note} 
-            updateNote={updateNote} shareNote={shareNote}
+            updateNote={updateNote} shareNote={shareNote} sharingNoteEmail={sharingNoteEmail}
              />
           );
         })}

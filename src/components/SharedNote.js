@@ -19,6 +19,7 @@ const SharedNote = (props) => {
    []);
 const context = useContext(NoteContext);
 const {sharedNote ,fetchSharedNotes,editSharedNote , fetchSharedToEmailNotes}= context;
+
 const host = process.env.REACT_APP_BACKEND_HOST_URL;
 var shareLink = window.location.href;
 const navigate = useNavigate();
