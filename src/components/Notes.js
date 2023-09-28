@@ -121,8 +121,8 @@ function Notes() {
                     <div className="input-group mb-3">
                 <label className="input-group-text" htmlFor="sharing">Additional Sharing Options</label>
                 <select className="form-select" id="sharing" name="sharing" value={sharing} onChange={handleSharingChange}>
-                 <option value="2">With Anyone</option>
-                  <option value="1">With Email</option>
+                 <option value='2'>With Anyone</option>
+                  <option value='1'>With Email</option>
                 </select>
                 </div>
       </>
@@ -260,7 +260,10 @@ function Notes() {
                 </select>
               </div>
               {permission > 0 ? <>{AdditionShareInfo} </>: <p> </p>}
-              {sharing==="1" ? <ManageEmail note={note} sharing={sharing}/> : <p> </p>}
+              {
+                // eslint-disable-next-line
+                sharing=="1" ? <ManageEmail note={note} sharing={sharing}/> : <p> </p>
+              }
               
 
             </div>

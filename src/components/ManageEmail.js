@@ -1,65 +1,97 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext ,useEffect} from "react";
 import NoteContext from "../context/notecontext";
 
 const ManageEmail = (props) => {
-  const [emailList, setEmailList] = useState([]);
-  const [cred, setCred] = useState({
-    email: "",
-  });
+
+    const host = process.env.REACT_APP_BACKEND_HOST_URL;
   const context = useContext(NoteContext);
   const { sharingNote } = context;
   const { note, sharing } = props;
-  const onEmailChange = (e) => {
-    const { name, value } = e.target;
-    setCred({ ...cred, [name]: value });
+
+  const [emails, setEmails] = useState([]);
+
+  useEffect(() => {
+    fetchEmails();
+  
+  }, [note])
+  
+
+  const fetchEmails = async () => {
+    const response = await fetch(`${host}/notekeeper/shareuser/emails/${note.eid}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization" : "Bearer "+ localStorage.getItem('token'),
+      },
+    });
+    const json = await response.json();
+    console.log(json)
+    setEmails(json);
   };
-  const handleSubmit = () => {
-    const emailString = emailList.join(',');
-    // Now you can send emailString to your backend API.
-    // Make an API request to submit the email addresses.
+
+  const handleAddEmail = (newEmail) => {
+    // Api Call here
+    console.log(note.eid);
+    setEmails([...emails, newEmail]);
+  };
+
+  const handleRemoveEmail = (indexToRemove) => {
+
+    // API CALL here
+    const updatedEmails = emails.filter((email, index) => index !== indexToRemove);
+    setEmails(updatedEmails);
   };
   
   
-  const handleAddEmail = async (e) => {
-    e.preventDefault();
-    //sharingNote(note.eid,note.epermission,sharing,cred.email)
-    if (cred.email.trim() !== '') {
-        setEmailList([...emailList, cred.email]);
-        setCred({ ...cred, email: '' }); // Clear the input field
+
+  function EmailList({ emailList, onRemoveEmail }) {
+    
+    // Api Call to get Email List 
+    //emailList = fetchEmails();
+
+    return (
+      <ul>
+        {emailList.map((email, index) => (
+          <li key={index}>
+            {email}{' '}
+            <button onClick={() => onRemoveEmail(index)} className="btn btn-sm btn-danger">
+              Remove
+            </button>
+          </li>
+        ))}
+      </ul>
+    );
+  }
+  function EmailForm({ onAddEmail }) {
+    const [email, setEmail] = useState('');
+  
+    const handleAddEmail = () => {
+      if (email.trim() !== '') {
+        onAddEmail(email);
+        setEmail('');
       }
-  };
+    };
+  
+    return (
+      <div>
+        <input
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="Enter email"
+        />
+        <button onClick={handleAddEmail} className="btn btn-primary">
+          Add Email
+        </button>
+      </div>
+    );
+  }
   return (
     <>
-      <form onSubmit={handleAddEmail}>
-        <div className="mb-3">
-          <label htmlFor="exampleInputEmail1" className="form-label">
-            Email address
-          </label>
-          <input
-            type="email"
-            className="form-control"
-            id="email"
-            name="email"
-            aria-describedby="emailHelp"
-            onChange={onEmailChange}
-            value={cred.email}
-          />
-        </div>
-        <button className="btn btn-primary my-1" onClick={handleAddEmail}>
-          Add
-        </button>
-        <ul>
-          {emailList.map((email, index) => (
-            <li key={index}>{email}</li>
-          ))}
-        </ul>
-        <button
-          className="btn btn-primary text-center mx-1"
-          onClick={handleSubmit}
-        >
-          Save Changes
-        </button>
-      </form>
+    <div>
+      <EmailForm onAddEmail={handleAddEmail} />
+      <EmailList emailList={emails} onRemoveEmail={handleRemoveEmail} />
+    </div>
     </>
   );
 };
