@@ -17,16 +17,28 @@ const SharedNoteUsers = () => {
 
    // eslint-disable-next-line
     const [token, setToken] = useState(localStorage.getItem('token') || '');
-      useEffect(()=>{
-          fetchSharedUserNotes();
+    useEffect(()=>{
+      const isTokenExpired = (token) => {
+        if (!token) {
+          return true; 
+        }
+        const tokenData = JSON.parse(atob(token.split('.')[1])); // Decode token payload
+        const tokenExpiration = tokenData.exp * 1000; // Convert expiration time to milliseconds
+  
+        return Date.now() > tokenExpiration;
+      };
+      if(!isTokenExpired(token) ){
+        fetchSharedUserNotes();
+      }
+      else{
+        navigate("/login");
+      }
+    },
+    // eslint-disable-next-line
+    [token,navigate])
 
-      },
-      // eslint-disable-next-line
-      [navigate])
 
-
-      
-      
+       
       const onChange = (e) => {
         setNote({ ...note, [e.target.name]: e.target.value });
       };

@@ -23,6 +23,11 @@ const NoteState=(props) =>{
             "Authorization" : "Bearer "+ localStorage.getItem('token'),
           },
         });
+        if (!response.ok) {
+          const data = await response.json();
+          showAlert(data.error , "danger");
+        }
+        
         const json = await response.json();
         console.log(json)
         setNotes(json);
@@ -35,6 +40,10 @@ const NoteState=(props) =>{
             "Authorization" : "Bearer "+ localStorage.getItem('token'),
           },
         });
+        if (!response.ok) {
+          const data = await response.json();
+          showAlert(data.error , "danger");
+        }
         const json = await response.json();
         console.log(json)
         setNotes(json);
@@ -52,6 +61,10 @@ const NoteState=(props) =>{
         },
         body: JSON.stringify({ title, description }),
       });
+      if (!response.ok) {
+        const data = await response.json();
+        showAlert(data.error , "danger");
+      }
       const json = await response.json();
       console.log(json);
       currNotes.id=json.id;
@@ -73,6 +86,10 @@ const NoteState=(props) =>{
             "Authorization" : "Bearer "+ localStorage.getItem('token'),
           }
         });
+        if (!response.ok) {
+          const data = await response.json();
+          showAlert(data.error , "danger");
+        }
         console.log( await response.json());
         const newNotes = notes.filter((notes) => {
           return notes.id !== id;
@@ -95,6 +112,10 @@ const NoteState=(props) =>{
             "Authorization" : "Bearer "+ localStorage.getItem('token'),
           }
         });
+        if (!response.ok) {
+          const data = await response.json();
+          showAlert(data.error , "danger");
+        }
         console.log( await response.json());
         const newNotes = notes.filter((notes) => {
           return notes.id !== id;
@@ -118,6 +139,10 @@ const NoteState=(props) =>{
             body: JSON.stringify({ email}),
           }
         });
+        if (!response.ok) {
+          const data = await response.json();
+          showAlert(data.error , "danger");
+        }
         console.log( await response.json());
         const newNotes = notes.filter((notes) => {
           return notes.id !== id;
@@ -138,6 +163,10 @@ const NoteState=(props) =>{
           },
           body: JSON.stringify({ title, description}),
         });
+        if (!response.ok) {
+          const data = await response.json();
+          showAlert(data.error , "danger");
+        }
         const json = await response.json();
         console.log(json)
         let newNotes = JSON.parse(JSON.stringify(notes));
@@ -164,6 +193,10 @@ const NoteState=(props) =>{
         },
         body: JSON.stringify({ title, description}),
       });
+      if (!response.ok) {
+        const data = await response.json();
+        showAlert(data.error , "danger");
+      }
       const json = await response.json();
       console.log(json)
       let newNotes = JSON.parse(JSON.stringify(notes));
@@ -227,6 +260,10 @@ const sharingNoteEmail = async (id) => {
         "Content-Type": "application/json",
       },
     });
+    if (!response.ok) {
+      const data = await response.json();
+      showAlert(data.error , "danger");
+    }
     const json = await response.json();
     console.log(json);
     setSharedNote(json);
@@ -240,6 +277,10 @@ const sharingNoteEmail = async (id) => {
         "Authorization" : "Bearer "+ localStorage.getItem('token'),
       },
     });
+    if (!response.ok) {
+      const data = await response.json();
+      showAlert(data.error , "danger");
+    }
     const json = await response.json();
     console.log(json);
     setSharedNote(json);
@@ -253,6 +294,10 @@ const sharingNoteEmail = async (id) => {
       },
       body: JSON.stringify({ title, description}),
     });
+    if (!response.ok) {
+      const data = await response.json();
+      showAlert(data.error , "danger");
+    }
     const json = await response.json();
     console.log(json)
     let newNote = JSON.parse(JSON.stringify(sharedNote));
