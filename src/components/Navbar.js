@@ -1,9 +1,17 @@
-import React from "react";
+import React, { useEffect} from "react";
 import { Link } from "react-router-dom";
-function Navbar() {
-  var token = localStorage.getItem('token');
+function Navbar(props) {
+  // var token = localStorage.getItem('token');
+ // eslint-disable-next-line
+
+ let {token , setToken} = props
+  useEffect(() => {
+    localStorage.setItem('token', token);
+  }, [token]);
+
   const handleLogout = () => {
     localStorage.removeItem("token");
+    setToken('');
   };
   return (
     <>
@@ -42,7 +50,7 @@ function Navbar() {
               </li>
             </ul>
             <ul className="navbar-nav float-end">
-              {!token ? (
+              {!token? (
                 <>
                   <li className="nav-item">
                     <Link

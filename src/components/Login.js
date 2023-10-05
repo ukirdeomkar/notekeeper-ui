@@ -3,9 +3,9 @@ import { useNavigate } from "react-router-dom";
 import { Link  } from "react-router-dom";
 import AlertContext from '../context/alertContext';
 
-const Login = () => {
+const Login = (props) => {
   //eslint-disable-next-line
-  const [token, setToken] = useState(localStorage.getItem('token') || '');
+  let {token , setToken} = props
   const navigate = useNavigate();
   useEffect(()=>{
     const isTokenExpired = (token) => {
@@ -52,6 +52,7 @@ const Login = () => {
         console.log(json);
         if (json.success) {
           localStorage.setItem("token", json.token);
+          setToken(json.token);
           navigate("/");
           showAlert("Logged In Successfully", "success")
         } else {
