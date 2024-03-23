@@ -2,11 +2,16 @@ import React,{useState,useContext,useEffect} from 'react'
 import { useNavigate } from "react-router-dom";
 import { Link  } from "react-router-dom";
 import AlertContext from '../context/alertContext';
+import loadingContext from '../context/loadingContext';
+
 
 const Login = (props) => {
   //eslint-disable-next-line
   let {token , setToken} = props
   const navigate = useNavigate();
+  const logincontext  = useContext(loadingContext);
+  const{toggleLoading} = logincontext;
+  // toggleLoading(true);
   useEffect(()=>{
     const isTokenExpired = (token) => {
       if (!token) {
@@ -23,6 +28,7 @@ const Login = (props) => {
     else{
       navigate("/login");
     }
+    // toggleLoading(true);
   },
   // eslint-disable-next-line
   [token,navigate])
@@ -39,7 +45,9 @@ const Login = (props) => {
       };
 
     const handleSubmit = async (e) => {
+      try {
         e.preventDefault();
+        toggleLoading(true);
         const response = await fetch(`${host}/notekeeper/user/login`, {
           method: "POST",
           headers: {
@@ -57,6 +65,11 @@ const Login = (props) => {
           showAlert("Logged In Successfully", "success")
         } else {
           showAlert("Invalid Credentials","danger")
+        }}
+        catch (error) {
+          showAlert(error)
+        } finally {
+          toggleLoading(false);
         }
       };
 

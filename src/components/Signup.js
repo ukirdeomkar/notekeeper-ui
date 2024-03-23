@@ -2,11 +2,13 @@ import React,{useState, useContext,useEffect} from 'react'
 import { useNavigate } from "react-router-dom";
 import { Link  } from "react-router-dom";
 import AlertContext from '../context/alertContext';
-
+import loadingContext from '../context/loadingContext';
 const Signup = () => {
   //eslint-disable-next-line
   const [token, setToken] = useState(localStorage.getItem('token') || '');
   const navigate = useNavigate();
+  const logincontext  = useContext(loadingContext);
+  const{toggleLoading} = logincontext;
   useEffect(()=>{
     const isTokenExpired = (token) => {
       if (!token) {
@@ -38,6 +40,8 @@ const Signup = () => {
         setCred({ ...cred, [e.target.name]: e.target.value });
       };
       const handleSubmit = async(e)=>{
+        try{
+          toggleLoading(true);
         e.preventDefault();
         const response = await fetch(`${host}/notekeeper/user`, {
             method: "POST",
@@ -57,6 +61,11 @@ const Signup = () => {
            
             showAlert(json.error,"success");
           }
+        }catch (error) {
+          // Handle error
+        } finally {
+          toggleLoading(false);
+        }
       }
 
   return (

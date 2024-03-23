@@ -12,6 +12,9 @@ import SharedNote from './components/SharedNote';
 import AlertBar from './components/AlertBar';
 import SharedNoteUsers from './components/SharedNoteUsers';
 import React,{useState} from 'react'
+import { LoadingProvider } from './context/loadingContext';
+import Loading from './components/Loading';
+
 
 function App() {
   const [token, setToken] = useState(localStorage.getItem('token') || '');
@@ -19,11 +22,13 @@ function App() {
     <>
     <AlertState>
     <NoteState>
-      
+    <LoadingProvider>  
     <BrowserRouter>
     <Navbar token={token} setToken={setToken}/>
     <AlertBar/>
-    <Routes>
+    <Loading />
+      <Routes>
+
             <Route path='/' element={<Home/>} />
             <Route path='/about' element={<About />} />
             <Route path='/signup' element={<Signup />} />
@@ -32,9 +37,10 @@ function App() {
             <Route path={'/share/:shareId'} element={<SharedNote/>} />
             <Route path={'/share/emails/:shareId'} element={<SharedNote/>} />
 
-          </Routes>
+      </Routes>
+
     </BrowserRouter>
-    
+    </LoadingProvider>
     </NoteState>
     </AlertState>
     </>
