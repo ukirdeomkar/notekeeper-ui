@@ -2,8 +2,7 @@ import { useState ,useContext} from "react";
 import NoteContext from "./notecontext";
 import React from 'react'
 import AlertContext from "./alertContext";
-
-
+// import LoadingContext from "./loadingContext";
 const NoteState=(props) =>{
     const host = process.env.REACT_APP_BACKEND_HOST_URL;
     const currNotes = [];
@@ -14,8 +13,12 @@ const NoteState=(props) =>{
     const ui = process.env.REACT_APP_FRONTEND_HOST_URL;
     const context1  = useContext(AlertContext);
     const{showAlert} = context1;
+    const [noteLoading, setNoteLoading] = useState(false);
 
     const fetchNotes = async () => {
+      try{
+        setNoteLoading(true)
+        console.log("Set not loading",noteLoading);
         const response = await fetch(`${host}/notekeeper/note/user/notes`, {
           method: "GET",
           headers: {
@@ -31,8 +34,16 @@ const NoteState=(props) =>{
         const json = await response.json();
         console.log(json)
         setNotes(json);
+      }
+      catch (error) {
+        alert("Some error Occured")
+      } finally {
+        setNoteLoading(false)
+      }
       };
       const fetchSharedUserNotes = async () => {
+        try{
+         setNoteLoading(true);
         const response = await fetch(`${host}/notekeeper/shareuser/shared`, {
           method: "GET",
           headers: {
@@ -47,10 +58,18 @@ const NoteState=(props) =>{
         const json = await response.json();
         console.log(json)
         setNotes(json);
+      }
+      catch (error) {
+        alert("Some error Occured")
+      } finally {
+        setNoteLoading(false);
+      }
       };
       
 
     const addNote = async(currNotes)=>{
+      try{
+        setNoteLoading(true);
       const { title, description} = currNotes; 
       // eslint-disable-next-line
       const response = await fetch(`${host}/notekeeper/note/`, {
@@ -72,11 +91,18 @@ const NoteState=(props) =>{
       currNotes.sharing = json.sharing;
       setNotes(notes.concat(currNotes))
       showAlert("Note Added Successfully","success")
+    }
+    catch (error) {
+      alert("Some error Occured")
+    } finally {
+      setNoteLoading(false);
+    }
       
     };
 
     const deleteNote = async(id) => {
-
+try{
+  setNoteLoading(true);
       const confirmed = window.confirm("Are you sure you want to delete this note?");
       if(confirmed){
         const response = await fetch(`${host}/notekeeper/note/${id}`, {
@@ -98,6 +124,12 @@ const NoteState=(props) =>{
         setNotes(newNotes);
         showAlert("Note Deleted Successfully","danger")
       }
+    }
+    catch (error) {
+      alert("Some error Occured")
+    } finally {
+      setNoteLoading(false);
+    }
       
 
     };
@@ -314,7 +346,7 @@ const sharingNoteEmail = async (id) => {
     notes ,sharedNote,shareLink,setshareLink,
     fetchNotes ,addNote , deleteNote ,editNote , 
     sharingNote ,fetchSharedNotes ,editSharedNote , fetchSharedUserNotes 
-    ,editNoteSharedUser ,deleteNoteSharedUser ,RemoveSharedUserAccess, fetchSharedToEmailNotes , sharingNoteEmail }}>
+    ,editNoteSharedUser ,deleteNoteSharedUser ,RemoveSharedUserAccess, fetchSharedToEmailNotes , sharingNoteEmail , noteLoading }}>
       {props.children}
     </NoteContext.Provider>
   )

@@ -3,14 +3,16 @@ import { useNavigate } from "react-router-dom";
 import NoteContext from "../context/notecontext";
 import NoteItem from "./NoteItem";
 import ManageEmail from "./ManageEmail";
+import Loading from "./Loading";
 
 function Notes() {
 
     const context = useContext(NoteContext);
     
-    const { notes ,shareLink, fetchNotes ,editNote , sharingNote } = context;
+    const { notes ,shareLink, fetchNotes ,editNote , sharingNote,noteLoading  } = context;
     const [permission, setpermission] = useState(undefined);
     const [sharing, setsharing] = useState(0);
+    const [loading,setLoading]=useState(noteLoading);
 
     let navigate = useNavigate();
     const [note, setNote] = useState({
@@ -39,6 +41,10 @@ function Notes() {
       },
       // eslint-disable-next-line
       [token,navigate])
+
+      useEffect(() => {
+        setLoading(noteLoading)
+      }, [noteLoading]);
 
 
       
@@ -286,17 +292,31 @@ function Notes() {
 
       {/* Display Notes for User */}
       {notes.length===0?
-              <h5>No Notes to display</h5>
+ 
+       !loading? <h5>No Notes to display</h5> : <Loading propsLoading={true}/>
+              
             :
-      <div className='row my-5'>
-        {notes.map((note) => {
-          return (
-            <NoteItem key={note.id} note={note} 
-            updateNote={updateNote} shareNote={shareNote}
-             />
-          );
-        })}
-      </div>}
+            <>
+            {
+                
+                !loading?
+                <div className='row my-5'>
+                {notes.map((note) => {
+                  return (
+                    <NoteItem key={note.id} note={note} 
+                    updateNote={updateNote} shareNote={shareNote}
+                    />
+                  );
+                })}
+                </div>
+                :
+                <Loading propsLoading={true}/>
+                
+            }
+           
+
+      </>
+      }
     </>
   )
 }
